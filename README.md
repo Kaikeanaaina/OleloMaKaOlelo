@@ -5,6 +5,11 @@ take a look at the config/example.js file for an example
 
 touch config/dev.js
 
+start making your new project and enable API
+uri end routes
+
+
+
 npm run dev
 
 if this is a new IP Address
