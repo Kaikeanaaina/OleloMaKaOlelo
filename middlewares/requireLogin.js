@@ -1,6 +1,12 @@
+const {GoogleId} = require('../config/dev')
+
 module.exports = (req, res, next) => {
     if (!req.user) {
       return res.status(401).send({ error: 'You must log in!'})
+    }
+
+    if (req.user.googleId===GoogleId) {
+      return res.status(401).send({ error: 'You are not my master!!!'})
     }
   
     next()
