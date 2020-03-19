@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { connect } from 'react-redux'
 import * as actions from './actions'
+import {GoogleId} from '../../config/dev'
 
 import Header from './components/Header'
 import Landing from './components/Landing'
@@ -22,15 +23,28 @@ class App extends Component {
       case false:
         return  <Route path="*" component={Login} />
       default:
-        return(
-          <div>
-            <Switch>
-              <Route exact path="/" component={Landing} />
-              <Route exact path="/home" component={Dashboard} />
-              <Route component={Page404} />
-            </Switch>
-          </div>
-        )
+
+        switch (this.props.auth.googleId===GoogleId){
+
+          case null:
+            return
+          case false:
+            return
+          default:
+
+            return(
+              <div>
+                <Switch>
+                  <Route exact path="/" component={Landing} />
+                  <Route exact path="/home" component={Dashboard} />
+                  <Route component={Page404} />
+                </Switch>
+              </div>
+            )
+          
+                
+                
+        }
     }
   }
   render() {
