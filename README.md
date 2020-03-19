@@ -3,6 +3,8 @@ npm i
 need to set up config/ directory
 take a look at the config/example.js file for an example
 
+touch config/dev.js
+
 npm run dev
 
 if this is a new IP Address
@@ -12,3 +14,7 @@ if this is a new IP Address
 to test
 in the root directory
 npm test
+
+
+
+Make sure to update both Root and Client Directory
