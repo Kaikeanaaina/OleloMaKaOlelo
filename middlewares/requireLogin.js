@@ -5,10 +5,10 @@ module.exports = (req, res, next) => {
       return res.status(401).send({ error: 'You must log in!'})
     }
 
-    if (req.user.googleId===GoogleId) {
+    if (req.user.googleId!==GoogleId) {
       return res.status(401).send({ error: 'You are not my master!!!'})
     }
-  
+
     next()
   }
 
