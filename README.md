@@ -8,6 +8,7 @@ touch config/dev.js
 start making your new project and enable API
 uri end routes
 
+need to make a /client/src/config/id
 
 
 npm run dev
