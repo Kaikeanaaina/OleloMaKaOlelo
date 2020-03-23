@@ -5,7 +5,7 @@ const Dashboard = () => {
   return (
     <div>
       <p>dashboard home, is logged in</p>
-      <Link to="/vocab">
+      <Link to="/huaolelo">
         <h2>vocab dashboard</h2>
       </Link>
       <h2>sentence structures</h2>

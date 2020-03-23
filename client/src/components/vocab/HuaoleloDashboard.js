@@ -10,7 +10,7 @@ export class VocabDashboard extends Component {
     render() {
         return (
             <div>
-                <h1>vocab dashboard</h1>
+                <h1>huaolelo dashboard</h1>
             </div>
         )
     }
