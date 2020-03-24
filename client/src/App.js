@@ -16,7 +16,6 @@ import HuaoleloDashboard from './components/vocab/HuaoleloDashboard'
 class App extends Component {
   componentDidMount() {
     this.props.fetchUser()
-    .then(() => {console.log('123123', this.props.auth)})
   }
   renderRoutes() {
     switch (this.props.auth){
