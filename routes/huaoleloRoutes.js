@@ -14,7 +14,6 @@ module.exports = app => {
     })
 
     app.get('/api/wordGroups', async (req, res) => {
-        console.log('getting wordgroup')
         const wordgroups = await WordGroup.find({}).select({})
 
         res.send(wordgroups)
