@@ -2,26 +2,29 @@ import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import { fetchWordGroups } from '../../actions'
 
+import NewHuaoleloCard from './NewHuaoleloCard'
+
 class WordGroupsList extends Component {
     componentDidMount(){
         this.props.fetchWordGroups()
     }
-    renderWordGroups(){
-            console.log('the wordGroup', this.props.wordGroups)
 
-            // return this.props.wordGroups.map()(wordGroup => {
-            //     return (
-            //             <div key={wordGroup._id}>
-            //                 <p>
-            //                     {wordGroup.title}
-            //                 </p>
-            //             </div>
-            //         )
-            //     })
+    renderWordGroups(){
+        return this.props.wordGroups.map(wordgroup => {
+            return (
+              <div className="card darken-1" key={wordgroup._id}>
+                <div className="card-content">
+                  <span className="card-title"> {wordgroup.title}</span>
+                </div>
+              </div>
+            )
+          })
     }
+
     render () {
         return (
             <div style={{ textAlign: 'center' }}>
+                <NewHuaoleloCard />
                 {this.renderWordGroups()}
             </div>
         )
