@@ -8,13 +8,17 @@ class NewHuaoleloCard extends Component {
     constructor(props) {
         super(props);
         this.handleSelectWordGroup = this.handleSelectWordGroup.bind(this)
+        this.onSubmit = this.onSubmit.bind(this)
         this.state = {
             word: ''
         }
     }
     handleSelectWordGroup(event){
         event.preventDefault()
-        console.log(event.target.value)
+        this.setState({word: event.target.value})
+    }
+    onSubmit(event){
+        console.log('this is the state, ', this.state)
     }
     renderWordList(){
         return this.props.wordGroups.sort().map(wordGroup => {
@@ -63,6 +67,7 @@ class NewHuaoleloCard extends Component {
                         
                         {this.renderWordList()}
                     </Select>
+                    <button onClick={this.onSubmit}>submit</button>
                 </div>
             </div>
         )
