@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import 'materialize-css';
-import { Select } from 'react-materialize';
+import { Select, TextInput } from 'react-materialize';
 import { connect } from 'react-redux'
 
 
@@ -33,7 +33,11 @@ class NewHuaoleloCard extends Component {
         return (
             <div className="card darken-1">
                 <div className="card-content" >
-                    <h2>New Huaolelo Card</h2>
+                    <h5>New Huaolelo Card</h5>
+                    <TextInput
+                        id="newHuaoleloHou"
+                        label="Huaolelo Hou"
+                    />
                     <Select
                         id="Select-9"
                         multiple={false}
