@@ -7,7 +7,7 @@ class WordGroupsList extends Component {
         this.props.fetchWordGroups()
     }
     renderWordGroups(){
-            console.log('the wordGroup', this.props.wordGroups)
+             console.log('the wordGroup', this.props.wordGroups)
 
             // return this.props.wordGroups.map()(wordGroup => {
             //     return (
