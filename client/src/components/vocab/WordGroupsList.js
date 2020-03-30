@@ -10,7 +10,7 @@ class WordGroupsList extends Component {
     }
 
     renderWordGroups(){
-        return this.props.wordGroups.map(wordgroup => {
+        return this.props.wordGroups.sort().map(wordgroup => {
             return (
               <div className="card darken-1" key={wordgroup._id}>
                 <div className="card-content">
