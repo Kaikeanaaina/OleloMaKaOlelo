@@ -105,8 +105,6 @@ class NewHuaoleloCard extends Component {
                     <TextInput id="audioExampleTitleThree" label="audioExampleTitleThree" name="audioExampleTitleThree" onChange={this.handleChange} />
                     <TextInput id="audioExampleThree" label="audioExampleThree" name="audioExampleThree" onChange={this.handleChange} />
                     
-
-
                     <Select
                         id="Select-9"
                         multiple={false}
