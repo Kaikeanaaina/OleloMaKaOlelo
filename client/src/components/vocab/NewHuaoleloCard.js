@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import 'materialize-css';
-import { Select, TextInput, Textarea } from 'react-materialize';
+import { Select, TextInput } from 'react-materialize';
 import { connect } from 'react-redux'
 
 
@@ -8,9 +8,8 @@ class NewHuaoleloCard extends Component {
     constructor(props) {
         super(props);
         this.handleSelectWordGroup = this.handleSelectWordGroup.bind(this)
-        this.handleHuaoleloHou = this.handleHuaoleloHou.bind(this)
-        this.handleUnuhi = this.handleUnuhi.bind(this)
         this.onSubmit = this.onSubmit.bind(this)
+        this.handleChange = this.handleChange.bind(this)
         this.state = {
             huaoleloHou: '',
             unuhi: '',
@@ -24,11 +23,11 @@ class NewHuaoleloCard extends Component {
             audioTitleFour: '',
             audioFour: '',
 
-            imageTitleOne:'',
+            imageTitleOne: '',
             imageOne: '',
-            imageTitleTwo:'',
+            imageTitleTwo: '',
             imageTwo: '',
-            imageTitleThree:'',
+            imageTitleThree: '',
             imageThree: '',
 
             exampleOne: '',
@@ -43,14 +42,14 @@ class NewHuaoleloCard extends Component {
             audioExampleThree: '',
         }
     }
-    handleSelectWordGroup(event){
+    handleSelectWordGroup(event) {
         event.preventDefault()
-        this.setState({word: event.target.value})
+        this.setState({ word: event.target.value })
     }
-    onSubmit(event){
-        console.log('this is the state, ', this.state)
+    onSubmit() {
+        console.log('state, ', this.state)
     }
-    renderWordList(){
+    renderWordList() {
         return this.props.wordGroups.sort().map(wordGroup => {
             return (
                 <option key={wordGroup._id} value={wordGroup.title}>
@@ -59,31 +58,54 @@ class NewHuaoleloCard extends Component {
             )
         })
     }
-    handleHuaoleloHou(event){
-        this.setState({huaoleloHou: event.target.value})
+    handleChange(evt) {
+        const value = evt.target.value;
+        this.setState({
+            ...this.state,
+            [evt.target.name]: value
+        });
     }
-    handleUnuhi(event){
+    handleChangeTextArea(event){
         this.setState({unuhi: event.target.value})
     }
-    render(){
+    render() {
         return (
             <div className="card darken-1">
                 <div className="card-content" >
 
                     <h5>New Huaolelo Card</h5>
 
-                    <TextInput
-                        id="newHuaoleloHou"
-                        ref="newHuaoleloHou"
-                        label="Huaolelo Hou"
-                        onChange={this.handleHuaoleloHou}
-                    />
+                    <TextInput id="huaoleloHou" label="huaoleloHou" name="huaoleloHou" onChange={this.handleChange} />
+                    <TextInput id="unuhi" label="unuhi" name="unuhi" onChange={this.handleChange} />
 
-                    <Textarea
-                        id="huaoleloHouUnuhiTextArea"
-                        label="unuhi"
-                        onChange={this.handleUnuhi}
-                    />
+                    <TextInput id="audioTitleOne" label="audioTitleOne" name="audioTitleOne" onChange={this.handleChange} />
+                    <TextInput id="audioOne" label="audioOne" name="audioOne" onChange={this.handleChange} />
+                    <TextInput id="audioTitleTwo" label="audioTitleTwo" name="audioTitleTwo" onChange={this.handleChange} />
+                    <TextInput id="audioTwo" label="audioTwo" name="audioTwo" onChange={this.handleChange} />
+                    <TextInput id="audioTitleThree" label="audioTitleThree" name="audioTitleThree" onChange={this.handleChange} />
+                    <TextInput id="audioThree" label="audioThree" name="audioThree" onChange={this.handleChange} />
+                    <TextInput id="audioTitleFour" label="audioTitleFour" name="audioTitleFour" onChange={this.handleChange} />
+                    <TextInput id="audioFour" label="audioFour" name="audioFour" onChange={this.handleChange} />
+
+                    <TextInput id="imageTitleOne" label="imageTitleOne" name="imageTitleOne" onChange={this.handleChange} />
+                    <TextInput id="imageOne" label="imageOne" name="imageOne" onChange={this.handleChange} />
+                    <TextInput id="imageTitleTwo" label="imageTitleTwo" name="imageTitleTwo" onChange={this.handleChange} />
+                    <TextInput id="imageTwo" label="imageTwo" name="imageTwo" onChange={this.handleChange} />
+                    <TextInput id="imageTitleThree" label="imageTitleThree" name="imageTitleThree" onChange={this.handleChange} />
+                    <TextInput id="imageThree" label="imageThree" name="imageThree" onChange={this.handleChange} />
+
+                    <TextInput id="exampleOne" label="exampleOne" name="exampleOne" onChange={this.handleChange} />
+                    <TextInput id="exampleTwo" label="exampleTwo" name="exampleTwo" onChange={this.handleChange} />
+                    <TextInput id="exampleThree" label="exampleThree" name="exampleThree" onChange={this.handleChange} />
+
+                    <TextInput id="audioExampleTitleOne" label="audioExampleTitleOne" name="audioExampleTitleOne" onChange={this.handleChange} />
+                    <TextInput id="audioExampleOne" label="audioExampleOne" name="audioExampleOne" onChange={this.handleChange} />
+                    <TextInput id="audioExampleTitleTwo" label="audioExampleTitleTwo" name="audioExampleTitleTwo" onChange={this.handleChange} />
+                    <TextInput id="audioExampleTwo" label="audioExampleTwo" name="audioExampleTwo" onChange={this.handleChange} />
+                    <TextInput id="audioExampleTitleThree" label="audioExampleTitleThree" name="audioExampleTitleThree" onChange={this.handleChange} />
+                    <TextInput id="audioExampleThree" label="audioExampleThree" name="audioExampleThree" onChange={this.handleChange} />
+                    
+
 
                     <Select
                         id="Select-9"
@@ -108,14 +130,14 @@ class NewHuaoleloCard extends Component {
                             }
                         }}
                         value=""
-                        >
+                    >
                         <option
                             disabled
                             value=""
-                            >
+                        >
                             Choose your option
                         </option>
-                        
+
                         {this.renderWordList()}
                     </Select>
 
@@ -128,7 +150,7 @@ class NewHuaoleloCard extends Component {
 }
 
 function mapStateToProps({ wordGroups }) {
-    return { wordGroups}
+    return { wordGroups }
 }
 
 export default connect(mapStateToProps)(NewHuaoleloCard)
