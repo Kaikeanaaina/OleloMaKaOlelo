@@ -1,15 +1,15 @@
 import React, { Component } from 'react'
 import 'materialize-css';
-import { Select, TextInput } from 'react-materialize';
+import { Select, TextInput, Button } from 'react-materialize';
 import { connect } from 'react-redux'
-
 
 class NewHuaoleloCard extends Component {
     constructor(props) {
         super(props);
         this.handleSelectWordGroup = this.handleSelectWordGroup.bind(this)
-        this.onSubmit = this.onSubmit.bind(this)
+        this.handleHuaoleloHou = this.handleHuaoleloHou.bind(this)
         this.handleChange = this.handleChange.bind(this)
+        this.onSubmit = this.onSubmit.bind(this)
         this.state = {
             huaoleloHou: '',
             unuhi: '',
@@ -40,14 +40,15 @@ class NewHuaoleloCard extends Component {
             audioExampleTwo: '',
             audioExampleTitleThree: '',
             audioExampleThree: '',
+
+            wordGroup: '',
+
+            isShowingSubmitButton: false
         }
     }
     handleSelectWordGroup(event) {
         event.preventDefault()
-        this.setState({ word: event.target.value })
-    }
-    onSubmit() {
-        console.log('state, ', this.state)
+        this.setState({ wordGroup: event.target.value })
     }
     renderWordList() {
         return this.props.wordGroups.sort().map(wordGroup => {
@@ -58,6 +59,9 @@ class NewHuaoleloCard extends Component {
             )
         })
     }
+    handleHuaoleloHou(event) {
+        this.setState({ huaoleloHou: event.target.value })
+    }
     handleChange(evt) {
         const value = evt.target.value;
         this.setState({
@@ -65,20 +69,29 @@ class NewHuaoleloCard extends Component {
             [evt.target.name]: value
         });
     }
-    handleChangeTextArea(event){
-        this.setState({unuhi: event.target.value})
+    handleChangeTextArea(event) {
+        this.setState({ unuhi: event.target.value })
+    }
+    onSubmit() {
+        console.log('state, ', this.state)
     }
     render() {
+        let submitButton = null
+        if (this.state.huaoleloHou&&this.state.wordGroup) {
+            submitButton = (<Button onClick={this.onSubmit}>submit</Button>)
+        } else {
+            submitButton = null
+        }
         return (
             <div className="card darken-1">
                 <div className="card-content" >
 
                     <h5>New Huaolelo Card</h5>
 
-                    <TextInput id="huaoleloHou" label="huaoleloHou" name="huaoleloHou" onChange={this.handleChange} />
-                    <TextInput id="unuhi" label="unuhi" name="unuhi" onChange={this.handleChange} />
+                    <TextInput id="huaoleloHou" label="Huaolelo Hou" name="huaoleloHou" onChange={this.handleHuaoleloHou} />
+                    <TextInput id="unuhi" label="unuhi" name="Unuhi" onChange={this.handleChange} />
 
-                    <TextInput id="audioTitleOne" label="audioTitleOne" name="audioTitleOne" onChange={this.handleChange} />
+                    {/* <TextInput id="audioTitleOne" label="audioTitleOne" name="audioTitleOne" onChange={this.handleChange} />
                     <TextInput id="audioOne" label="audioOne" name="audioOne" onChange={this.handleChange} />
                     <TextInput id="audioTitleTwo" label="audioTitleTwo" name="audioTitleTwo" onChange={this.handleChange} />
                     <TextInput id="audioTwo" label="audioTwo" name="audioTwo" onChange={this.handleChange} />
@@ -103,11 +116,12 @@ class NewHuaoleloCard extends Component {
                     <TextInput id="audioExampleTitleTwo" label="audioExampleTitleTwo" name="audioExampleTitleTwo" onChange={this.handleChange} />
                     <TextInput id="audioExampleTwo" label="audioExampleTwo" name="audioExampleTwo" onChange={this.handleChange} />
                     <TextInput id="audioExampleTitleThree" label="audioExampleTitleThree" name="audioExampleTitleThree" onChange={this.handleChange} />
-                    <TextInput id="audioExampleThree" label="audioExampleThree" name="audioExampleThree" onChange={this.handleChange} />
-                    
+                    <TextInput id="audioExampleThree" label="audioExampleThree" name="audioExampleThree" onChange={this.handleChange} /> */}
+
                     <Select
                         id="Select-9"
                         multiple={false}
+                        label="Pick Word Group"
                         onChange={this.handleSelectWordGroup}
                         options={{
                             classes: '',
@@ -130,7 +144,6 @@ class NewHuaoleloCard extends Component {
                         value=""
                     >
                         <option
-                            disabled
                             value=""
                         >
                             Choose your option
@@ -139,7 +152,7 @@ class NewHuaoleloCard extends Component {
                         {this.renderWordList()}
                     </Select>
 
-                    <button onClick={this.onSubmit}>submit</button>
+                    {submitButton}
 
                 </div>
             </div>
