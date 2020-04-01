@@ -1,14 +1,16 @@
-import React from 'react'
+import React, {Component} from 'react'
 
 
-const NewHuaoleloCard = () => {
-    return (
-        <div className="card darken-1">
-            <div className="card-content" >
-                <h2>New Huaolelo Card</h2>
+class NewHuaoleloCard extends Component {
+    render(){
+        return (
+            <div className="card darken-1">
+                <div className="card-content" >
+                    <h2>New Huaolelo Card</h2>
+                </div>
             </div>
-        </div>
-    )
+        )
+    }
 }
 
 export default NewHuaoleloCard
