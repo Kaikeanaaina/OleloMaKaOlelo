@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import 'materialize-css';
 import { Select, TextInput, Button, ProgressBar } from 'react-materialize';
 import { connect } from 'react-redux'
+import {submitHuaolelo, submitWordGroup} from '../../actions'
 
 class NewHuaoleloCard extends Component {
     constructor(props) {
@@ -49,6 +50,10 @@ class NewHuaoleloCard extends Component {
             isShowingSubmitButton: false,
             errorMessage: ''
         }
+    }
+    componentDidMount(){
+        this.props.submitHuaolelo()
+        this.props.submitWordGroup()
     }
     handleSelectWordGroup(event) {
         event.preventDefault()
@@ -216,4 +221,4 @@ function mapStateToProps({ wordGroups }) {
     return { wordGroups }
 }
 
-export default connect(mapStateToProps)(NewHuaoleloCard)
+export default connect(mapStateToProps, {submitHuaolelo, submitWordGroup})(NewHuaoleloCard)
