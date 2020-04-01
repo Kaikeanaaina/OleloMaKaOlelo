@@ -69,10 +69,7 @@ class NewHuaoleloCard extends Component {
     }
     handleChange(evt) {
         const value = evt.target.value;
-        this.setState({
-            ...this.state,
-            [evt.target.name]: value
-        });
+        this.setState({...this.state, [evt.target.name]: value});
     }
     handleChangeTextArea(event) {
         this.setState({ unuhi: event.target.value })
