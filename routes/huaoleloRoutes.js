@@ -25,7 +25,7 @@ module.exports = app => {
     })
 
     app.post('/api/wordGroup', async (req, res) => {
-        console.log('this is the word group posting, ', res.body )
+        console.log('this is the word group posting, ', req.body )
         return
         // if (!req.body.title) {
         //     return res.send('there is no body in the request')
