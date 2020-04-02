@@ -25,9 +25,3 @@ export const fetchWordGroups = () => async dispatch => {
 
   dispatch({ type: FETCH_WORD_GROUPS, payload: res.data})
 }
-
-export const submitWordGroup = (values, history) => async dispatch => {
-  const res = await axios.post('/api/wordGroup', values)
-
-  dispatch({ type: FETCH_USER, payload: res.data})
-}
