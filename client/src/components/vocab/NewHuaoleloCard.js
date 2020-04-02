@@ -1,22 +1,22 @@
 import React, { Component } from 'react'
 import 'materialize-css';
-import { Select, TextInput, Button, ProgressBar } from 'react-materialize';
+import { TextInput, Button, ProgressBar, Switch } from 'react-materialize';
 import { connect } from 'react-redux'
-import {submitHuaolelo, submitWordGroup} from '../../actions'
+import { submitHuaolelo } from '../../actions'
 
 class NewHuaoleloCard extends Component {
     constructor(props) {
         super(props);
-        this.handleSelectWordGroup = this.handleSelectWordGroup.bind(this)
         this.handleHuaoleloHou = this.handleHuaoleloHou.bind(this)
         this.handleChange = this.handleChange.bind(this)
         this.handleNewWordGroup = this.handleNewWordGroup.bind(this)
+        this.handleSwitch = this.handleSwitch.bind(this)
         this.onSubmit = this.onSubmit.bind(this)
         this.state = {
-            isLoading: false, 
+            isLoading: false,
             huaoleloHou: '',
             unuhi: '',
-            newWordGroup:'',
+            newWordGroup: '',
 
             audioTitleOne: '',
             audioOne: '',
@@ -45,27 +45,24 @@ class NewHuaoleloCard extends Component {
             audioExampleTitleThree: '',
             audioExampleThree: '',
 
-            wordGroup: '',
+            wordGroup: [],
 
             isShowingSubmitButton: false,
+            isShowingNewWordContent: false,
             errorMessage: ''
         }
-    }
-    componentDidMount(){
-        this.props.submitHuaolelo()
-        this.props.submitWordGroup()
-    }
-    handleSelectWordGroup(event) {
-        event.preventDefault()
-
-        this.setState({ wordGroup: event.target.value })
     }
     renderWordList() {
         return this.props.wordGroups.sort().map(wordGroup => {
             return (
-                <option key={wordGroup._id} value={wordGroup.title}>
-                    {wordGroup.title}
-                </option>
+                <Switch
+                    id={wordGroup.title}
+                    key={wordGroup.title}
+                    offLabel="Off"
+                    onLabel={wordGroup.title}
+                    value={wordGroup.title}
+                    onChange={this.handleSwitch}
+                />
             )
         })
     }
@@ -74,29 +71,47 @@ class NewHuaoleloCard extends Component {
     }
     handleChange(evt) {
         const value = evt.target.value;
-        this.setState({...this.state, [evt.target.name]: value});
-    }
-    handleChangeTextArea(event) {
-        this.setState({ unuhi: event.target.value })
+        this.setState({ ...this.state, [evt.target.name]: value });
     }
     onSubmit() {
         console.log('state, ', this.state)
-        this.setState({isLoading:!this.state.isLoading})
+        // this.props.submitHuaolelo(this.state)
+        this.setState({ isLoading: !this.state.isLoading })
     }
-    handleNewWordGroup(event){
+    handleNewWordGroup(event) {
         const title = (element) => element.title.toLowerCase() === event.target.value.toLowerCase()
         const newGroupArray = this.props.wordGroups.some(title)
-        if(newGroupArray){
-            this.setState({errorMessage: 'Word Group title already exists'})
+        if (newGroupArray) {
+            this.setState({ errorMessage: 'Word Group title already exists' })
         } else {
-            this.setState({errorMessage: '', newWordGroup: event.target.value})
+            this.setState({ errorMessage: '', newWordGroup: event.target.value })
+        }
+    }
+    handleSwitch(event) {
+        //this is for when the event.target.value is "others...""
+        if (event.target.value === 'other...' && event.target.checked) {
+            //do not push "other..." into the array, 
+            return this.setState({ isShowingNewWordContent: true })
+        } else if (event.target.value === 'other...' && !event.target.checked) {
+            return this.setState({ isShowingNewWordContent: false })
+        }
+
+        switch (event.target.checked) {
+            case false:
+                const isTheValue = (element) => element === event.target.value;
+                const finding = this.state.wordGroup.findIndex(isTheValue)
+                return this.state.wordGroup.splice(finding, 1)
+            case true:
+                return this.state.wordGroup.push(event.target.value)
+            default:
+                return null
         }
     }
     render() {
         let submitButton = null
-        if (this.state.huaoleloHou&&this.state.wordGroup) {
+        if (this.state.huaoleloHou && this.state.wordGroup) {
             submitButton = (<Button onClick={this.onSubmit}>submit</Button>)
-            if((this.state.wordGroup === 'other...' && !this.state.newWordGroup) || this.state.errorMessage){
+            if ((this.state.wordGroup === 'other...' && !this.state.newWordGroup) || this.state.errorMessage) {
                 submitButton = null
             }
         } else {
@@ -105,16 +120,17 @@ class NewHuaoleloCard extends Component {
 
         const { isLoading } = this.state
         const content = () => {
-          switch(true) {
-            case isLoading:
-              return <ProgressBar />
-            default:
-              return (<h2>hi</h2>)
-          }
-        } 
+            switch (true) {
+                case isLoading:
+                    return <ProgressBar />
+                default:
+                    return (<h2>hi</h2>)
+            }
+        }
 
         const newWordGroupContent = () => {
-            switch(this.state.wordGroup==="other..."){
+            const { isShowingNewWordContent } = this.state
+            switch (isShowingNewWordContent) {
                 case true:
                     return (<TextInput id="newWordGroup" label="newWordGroup" name="newWordGroup" onChange={this.handleNewWordGroup} />)
                 default:
@@ -129,7 +145,7 @@ class NewHuaoleloCard extends Component {
                     <h5>New Huaolelo Card</h5>
 
                     <TextInput id="huaoleloHou" label="Huaolelo Hou" name="huaoleloHou" onChange={this.handleHuaoleloHou} />
-                    <TextInput id="unuhi" label="unuhi" name="Unuhi" onChange={this.handleChange} />
+                    <TextInput id="unuhi" label="unuhi" name="unuhi" onChange={this.handleChange} />
 
                     <div>
                         {/* <TextInput id="audioTitleOne" label="audioTitleOne" name="audioTitleOne" onChange={this.handleChange} />
@@ -160,48 +176,19 @@ class NewHuaoleloCard extends Component {
                     <TextInput id="audioExampleThree" label="audioExampleThree" name="audioExampleThree" onChange={this.handleChange} /> */}
                     </div>
 
-                    <Select
-                        id="Select-9"
-                        multiple={false}
-                        label="Pick Word Group"
-                        onChange={this.handleSelectWordGroup}
-                        options={{
-                            classes: '',
-                            dropdownOptions: {
-                                alignment: 'left',
-                                autoTrigger: true,
-                                closeOnClick: true,
-                                constrainWidth: true,
-                                container: null,
-                                coverTrigger: true,
-                                hover: false,
-                                inDuration: 150,
-                                onCloseEnd: null,
-                                onCloseStart: null,
-                                onOpenEnd: null,
-                                onOpenStart: null,
-                                outDuration: 250
-                            }
-                        }}
-                        value=""
-                        >
-                        <option
-                            disabled
-                            value=""
-                            >
-                            Choose your option
-                        </option>
+                    {this.renderWordList()}
 
-                        {this.renderWordList()}
-
-                        <option value="other...">
-                            other...
-                        </option>
-                    </Select>
+                    <Switch
+                        id="Switch-11"
+                        offLabel="Off"
+                        onChange={this.handleSwitch}
+                        onLabel="other..."
+                        value="other..."
+                    />
 
                     {newWordGroupContent()}
                     <div>
-                        <p style={{color:'red'}}>
+                        <p style={{ color: 'red' }}>
                             {this.state.errorMessage}
                         </p>
                     </div>
@@ -218,4 +205,4 @@ function mapStateToProps({ wordGroups }) {
     return { wordGroups }
 }
 
-export default connect(mapStateToProps, {submitHuaolelo, submitWordGroup})(NewHuaoleloCard)
+export default connect(mapStateToProps, { submitHuaolelo })(NewHuaoleloCard)
