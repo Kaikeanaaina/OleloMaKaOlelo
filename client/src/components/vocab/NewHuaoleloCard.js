@@ -53,16 +53,6 @@ class NewHuaoleloCard extends Component {
             errorMessage: ''
         }
     }
-    componentDidMount() {
-        console.log(this.state.wordGroup.length)
-        if (this.state.wordGroup.length) {
-            console.log('it is true')
-        } else {
-            console.log('it is false')
-        }
-        //console.log('checking, ', this.state, this.state.wordGroup, typeof(this.state.wordGroup))
-
-    }
     renderWordList() {
         return this.props.wordGroups.sort().map(wordgroup => {
             return (
@@ -86,8 +76,10 @@ class NewHuaoleloCard extends Component {
     }
     onSubmit() {
         console.log('state, ', this.state)
-        // this.props.submitHuaolelo(this.state)
+        
         this.setState({ isLoading: !this.state.isLoading })
+        this.props.submitHuaolelo(this.state)
+        
     }
     handleNewWordGroup(event) {
         const title = (element) => element.title.toLowerCase() === event.target.value.toLowerCase()
@@ -99,9 +91,7 @@ class NewHuaoleloCard extends Component {
         }
     }
     handleSwitch(event) {
-        //this is for when the event.target.value is "others...""
         if (event.target.value === 'other...' && event.target.checked) {
-            //do not push "other..." into the array, 
             return this.setState({ isShowingNewWordContent: true })
         } else if (event.target.value === 'other...' && !event.target.checked) {
             return this.setState({ isShowingNewWordContent: false, newWordGroup: '', newWordGroupUnuhi: '' })
@@ -120,7 +110,7 @@ class NewHuaoleloCard extends Component {
         }
     }
     renderSubmitButton() {
-        if (this.state.newWordGroup && this.state.newWordGroupUnuhi && !this.state.errorMessage){
+        if (this.state.newWordGroup && this.state.newWordGroupUnuhi && !this.state.errorMessage) {
             return <Button onClick={this.onSubmit}>submit</Button>
         }
 
