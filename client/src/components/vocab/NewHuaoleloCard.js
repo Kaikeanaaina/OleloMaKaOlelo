@@ -75,8 +75,6 @@ class NewHuaoleloCard extends Component {
         this.setState({ ...this.state, [evt.target.name]: value });
     }
     onSubmit() {
-        console.log('state, ', this.state)
-        
         this.setState({ isLoading: !this.state.isLoading })
         this.props.submitHuaolelo(this.state)
         
