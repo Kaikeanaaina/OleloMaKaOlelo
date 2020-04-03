@@ -12,11 +12,14 @@ class NewHuaoleloCard extends Component {
         this.handleNewWordGroup = this.handleNewWordGroup.bind(this)
         this.handleSwitch = this.handleSwitch.bind(this)
         this.onSubmit = this.onSubmit.bind(this)
+        this.renderSubmitButton = this.renderSubmitButton.bind(this)
         this.state = {
             isLoading: false,
             huaoleloHou: '',
             unuhi: '',
+            wordGroup: [],
             newWordGroup: '',
+            newWordGroupUnuhi: '',
 
             audioTitleOne: '',
             audioOne: '',
@@ -45,22 +48,30 @@ class NewHuaoleloCard extends Component {
             audioExampleTitleThree: '',
             audioExampleThree: '',
 
-            wordGroup: [],
-
             isShowingSubmitButton: false,
             isShowingNewWordContent: false,
             errorMessage: ''
         }
     }
+    componentDidMount() {
+        console.log(this.state.wordGroup.length)
+        if (this.state.wordGroup.length) {
+            console.log('it is true')
+        } else {
+            console.log('it is false')
+        }
+        //console.log('checking, ', this.state, this.state.wordGroup, typeof(this.state.wordGroup))
+
+    }
     renderWordList() {
-        return this.props.wordGroups.sort().map(wordGroup => {
+        return this.props.wordGroups.sort().map(wordgroup => {
             return (
                 <Switch
-                    id={wordGroup.title}
-                    key={wordGroup.title}
+                    id={wordgroup.title}
+                    key={wordgroup.title}
                     offLabel="Off"
-                    onLabel={wordGroup.title}
-                    value={wordGroup.title}
+                    onLabel={wordgroup.title}
+                    value={wordgroup.title}
                     onChange={this.handleSwitch}
                 />
             )
@@ -93,30 +104,34 @@ class NewHuaoleloCard extends Component {
             //do not push "other..." into the array, 
             return this.setState({ isShowingNewWordContent: true })
         } else if (event.target.value === 'other...' && !event.target.checked) {
-            return this.setState({ isShowingNewWordContent: false })
+            return this.setState({ isShowingNewWordContent: false, newWordGroup: '', newWordGroupUnuhi: '' })
         }
 
         switch (event.target.checked) {
             case false:
-                const isTheValue = (element) => element === event.target.value;
-                const finding = this.state.wordGroup.findIndex(isTheValue)
-                return this.state.wordGroup.splice(finding, 1)
+                const finding = this.state.wordGroup.indexOf(event.target.value)
+                this.state.wordGroup.splice(finding, 1)
+                return this.setState({ wordGroup: this.state.wordGroup })
             case true:
-                return this.state.wordGroup.push(event.target.value)
+                this.state.wordGroup.push(event.target.value)
+                return this.setState({ wordGroup: this.state.wordGroup })
             default:
                 return null
         }
     }
-    render() {
-        let submitButton = null
-        if (this.state.huaoleloHou && this.state.wordGroup) {
-            submitButton = (<Button onClick={this.onSubmit}>submit</Button>)
-            if ((this.state.wordGroup === 'other...' && !this.state.newWordGroup) || this.state.errorMessage) {
-                submitButton = null
-            }
-        } else {
-            submitButton = null
+    renderSubmitButton() {
+        if (this.state.newWordGroup && this.state.newWordGroupUnuhi && !this.state.errorMessage){
+            return <Button onClick={this.onSubmit}>submit</Button>
         }
+
+        if (this.state.isShowingNewWordContent) {
+            return false
+        }
+        if (this.state.huaoleloHou && this.state.wordGroup.length) {
+            return <Button onClick={this.onSubmit}>submit</Button>
+        }
+    }
+    render() {
 
         const { isLoading } = this.state
         const content = () => {
@@ -132,7 +147,12 @@ class NewHuaoleloCard extends Component {
             const { isShowingNewWordContent } = this.state
             switch (isShowingNewWordContent) {
                 case true:
-                    return (<TextInput id="newWordGroup" label="newWordGroup" name="newWordGroup" onChange={this.handleNewWordGroup} />)
+                    return (
+                        <div>
+                            <TextInput id="newWordGroup" label="newWordGroup" name="newWordGroup" onChange={this.handleNewWordGroup} />
+                            <TextInput id="newWordGroupUnuhi" label="newWordGroupUnuhi" name="newWordGroupUnuhi" onChange={this.handleChange} />
+                        </div>
+                    )
                 default:
                     return null
             }
@@ -192,7 +212,7 @@ class NewHuaoleloCard extends Component {
                             {this.state.errorMessage}
                         </p>
                     </div>
-                    {submitButton}
+                    {this.renderSubmitButton()}
                     {content()}
 
                 </div>
