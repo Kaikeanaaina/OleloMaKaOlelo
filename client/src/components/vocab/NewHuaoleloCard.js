@@ -36,10 +36,13 @@ class NewHuaoleloCard extends Component {
             imageTwo: '',
             imageTitleThree: '',
             imageThree: '',
+            imageTitleFour: '',
+            imageFour: '',
 
             exampleOne: '',
             exampleTwo: '',
             exampleThree: '',
+            exampleFour: '',
 
             audioExampleTitleOne: '',
             audioExampleOne: '',
