@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import { fetchWordGroups } from '../../actions'
 
+import NewWordGroupCard from './NewWordGroupCard'
 import NewHuaoleloCard from './NewHuaoleloCard'
 
 class WordGroupsList extends Component {
@@ -24,6 +25,7 @@ class WordGroupsList extends Component {
     render () {
         return (
             <div style={{ textAlign: 'center' }}>
+                <NewWordGroupCard />
                 <NewHuaoleloCard />
                 {this.renderWordGroups()}
             </div>
