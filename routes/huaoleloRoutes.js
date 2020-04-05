@@ -92,7 +92,7 @@ module.exports = app => {
     app.post('/api/wordGroup', async (req, res) => {
     
         if (!req.body) {
-            return res.send('there is no body in the request')
+            return res.send({error:'there is no body in the request'})
         }
 
         const { newWordGroup, newWordGroupUnuhi } = req.body
@@ -100,25 +100,21 @@ module.exports = app => {
 
         console.log('exitingtitle , ', existingTitle)
         if (existingTitle.length) {
-            return res.send('title already exists in the database')
+            return res.send({error:'title already exists in the database'})
         } 
 
-        const wordgroups = await WordGroup.find({}).select({})
+        const wordGroup = new WordGroup({
+            title: newWordGroup,
+            unuhi: newWordGroupUnuhi
+        })
 
-        return res.send(wordgroups)
-
-        // const wordGroup = new WordGroup({
-        //     title: newWordGroup,
-        //     unuhi: newWordGroupUnuhi
-        // })
-
-        // try {
-        //     //await wordGroup.save()
-
-        //     res.send(wordGroup)
-        //   } catch (err) {
-        //     res.status(422).send(err)
-        //   }
+        try {
+            await wordGroup.save()
+            const wordgroups = await WordGroup.find({}).select({})
+            res.send(wordgroups)
+          } catch (err) {
+            res.status(422).send(err)
+          }
     })
 
     app.delete('/api/wordGroups', async (req, res) => {
