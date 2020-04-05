@@ -18,28 +18,38 @@ export class NewWordGroupCard extends Component {
             isLoading: false
         }
     }
-    componentDidMount(){
+    componentDidMount() {
         this.props.fetchWordGroups()
     }
     handleChange(evt) {
-        const title = (element) => element.title.toLowerCase() === evt.target.value.toLowerCase()
-        const newGroupArray = this.props.wordGroups.some(title)
-        if (newGroupArray) {
-            return this.setState({ errorMessage: 'Word Group title already exists' })
-        }
+        let value = evt.target.value;
+        switch (evt.target.id) {
+            case 'newWordGroup':
+                const title = (element) => element.title.toLowerCase() === evt.target.value.toLowerCase()
+                const newGroupArray = this.props.wordGroups.some(title)
 
-        const value = evt.target.value;
-        this.setState({ ...this.state, [evt.target.name]: value, errorMessage: '' });
+                this.setState({ ...this.state, [evt.target.name]: value, errorMessage: '' });
+
+                if (newGroupArray) {
+                    return this.setState({ errorMessage: 'Word Group title already exists' })
+                }
+
+                return
+            case 'newWordGroupUnuhi':
+                return this.setState({ ...this.state, [evt.target.name]: value});
+            default:
+                return false
+        }
     }
     onSubmit() {
-        this.setState({isLoading:true})
+        this.setState({ isLoading: true })
         this.props.submitWordGroup(this.state)
-        .then(() => {
-            this.setState({newWordGroup: '', newWordGroupUnuhi: '', isShowingInput: false, isLoading: false})
-        })
+            .then(() => {
+                this.setState({ newWordGroup: '', newWordGroupUnuhi: '', isShowingInput: false, isLoading: false })
+            })
     }
     renderContent() {
-        if(this.state.isLoading){
+        if (this.state.isLoading) {
             return (<div><h5>New Word Group</h5><ProgressBar /></div>)
         }
         switch (this.state.isShowingInput) {
