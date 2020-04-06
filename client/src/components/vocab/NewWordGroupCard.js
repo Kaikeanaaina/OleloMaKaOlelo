@@ -45,7 +45,7 @@ export class NewWordGroupCard extends Component {
         this.setState({ isLoading: true })
         this.props.submitWordGroup(this.state)
             .then(() => {
-                this.setState({ newWordGroup: '', newWordGroupUnuhi: '', isShowingInput: false, isLoading: false })
+                this.setState({ newWordGroup: '', newWordGroupUnuhi: '', isShowingInput: false, isLoading: false, errorMessage: '' })
             })
     }
     renderContent() {
