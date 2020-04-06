@@ -57,7 +57,9 @@ class NewHuaoleloCard extends Component {
         }
     }
     renderWordList() {
-        return this.props.wordGroups.sort().map(wordgroup => {
+        return this.props.wordGroups.sort(function(firstWordGroup,secondWordGroup) {
+            return firstWordGroup.title.localeCompare(secondWordGroup.title)
+        }).map(wordgroup => {
             return (
                 <Switch
                     id={wordgroup.title}
