@@ -1,13 +1,19 @@
 import React, { Component } from 'react'
 import 'materialize-css';
-import { Button, Icon } from 'react-materialize';
+import { Button, Icon, ProgressBar } from 'react-materialize';
 import { connect } from 'react-redux'
-import { fetchWordGroups } from '../../actions'
+import { fetchWordGroups, editWordGroup, deleteWordGroup } from '../../actions'
 
 import NewWordGroupCard from './NewWordGroupCard'
 import NewHuaoleloCard from './NewHuaoleloCard'
 
 class WordGroupsList extends Component {
+  constructor(props){
+    super(props)
+    this.state={
+      isLoading: false
+    }
+  }
   componentDidMount() {
     this.props.fetchWordGroups()
   }
@@ -18,6 +24,7 @@ class WordGroupsList extends Component {
         <div className="card darken-1" key={wordgroup._id}>
           <div className="card-content">
             <span className="card-title"> {title}</span>
+            {this.state.isLoading ? <ProgressBar /> : null}
             <div>
               <Button
                 className="orange"
@@ -45,11 +52,16 @@ class WordGroupsList extends Component {
     })
   }
   handleButton(title, action) {
+    console.log('firstThing', title, action)
+    this.setState({isLoading: !this.state.isLoading})
+
     switch(action){
       case('delete'):
-        return console.log('deleting')
+        this.props.deleteWordGroup(title)
+        return null
       case('edit'):
-        return console.log('editing')
+        this.props.editWordGroup(title)
+        return null
       default:
         return null
     }
@@ -69,4 +81,4 @@ function mapStateToProps({ wordGroups }) {
   return { wordGroups }
 }
 
-export default connect(mapStateToProps, { fetchWordGroups })(WordGroupsList)
+export default connect(mapStateToProps, { fetchWordGroups, editWordGroup, deleteWordGroup })(WordGroupsList)
