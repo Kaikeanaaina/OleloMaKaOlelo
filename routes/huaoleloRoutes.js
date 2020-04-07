@@ -87,8 +87,9 @@ module.exports = app => {
         }
     
         console.log('aloohhha , ', req.body)
-        // const { newWordGroup, newWordGroupUnuhi } = req.body
-        // const existingTitle = await WordGroup.find({title: newWordGroup})
+        
+        const { newWordGroup, newWordGroupUnuhi } = req.body
+        const existingTitle = await WordGroup.find({title: newWordGroup})
 
         // if (existingTitle.length) {
         //     return res.send({error:'title already exists in the database'})
