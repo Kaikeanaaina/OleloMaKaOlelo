@@ -85,28 +85,49 @@ module.exports = app => {
         if (!req.body) {
             return res.send({error:'there is no body in the request'})
         }
-    
-        console.log('aloohhha , ', req.body)
-        
+
         const { newWordGroup, newWordGroupUnuhi } = req.body
-        const existingTitle = await WordGroup.find({title: newWordGroup})
+        const arrayString = newWordGroup.split('')
+        const firstLetterWillCapital = arrayString[0].toUpperCase()
+        arrayString.splice(0,1,firstLetterWillCapital)
 
-        // if (existingTitle.length) {
-        //     return res.send({error:'title already exists in the database'})
-        // } 
+        var readyToCapitalize = false
+        var theIndex = 0
 
-        // const wordGroup = new WordGroup({
-        //     title: newWordGroup.toUpperCase(),
-        //     unuhi: newWordGroupUnuhi
-        // })
+        arrayString.forEach((element) => {
+            if (element === ' ') {
+                theIndex++
+                 return readyToCapitalize = true
+            } 
+            if (readyToCapitalize){
+                arrayString.splice(theIndex,1,element.toUpperCase())
+                readyToCapitalize = false
+                theIndex++
+                return
+            }
+            theIndex++
+            return 
+        })
 
-        // try {
-        //     await wordGroup.save()
-        //     const wordgroups = await WordGroup.find({}).select({})
-        //     res.send(wordgroups)
-        //   } catch (err) {
-        //     res.status(422).send(err)
-        //   }
+        const joiningAllTheStringLetters = arrayString.join('')
+        const existingTitle = await WordGroup.find({title: newWordGroup.toUpperCase()})
+
+        if (existingTitle.length) {
+            return res.send({error:'title already exists in the database'})
+        } 
+
+        const wordGroup = new WordGroup({
+            title: joiningAllTheStringLetters,
+            unuhi: newWordGroupUnuhi
+        })
+
+        try {
+            await wordGroup.save()
+            const wordgroups = await WordGroup.find({}).select({})
+            res.send(wordgroups)
+          } catch (err) {
+            res.status(422).send(err)
+          }
     })
 
     app.delete('/api/wordGroups', async (req, res) => {
