@@ -130,8 +130,16 @@ module.exports = app => {
           }
     })
 
+    app.put('/api/wordGrouop', async (req, res) => {
+        console.log('editing wordgroup', req.body)
+        return res.send({})
+    })
+
     app.delete('/api/wordGroups', async (req, res) => {
-        return console.log('delete wordgroup')
+        
+        console.log('delete wordgroup', req.body)
+        
+        return res.send({})
         //const { title } = req.body
 
         // const wordGroups = WordGroup.deleteMany({ title }, function (err) {});
