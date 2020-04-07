@@ -21,15 +21,6 @@ module.exports = app => {
         console.log('results , ', req.body)
         console.log('aloha ,', wordgroups)
         const {huaolelo, unuhi, wordGroup} = req.body 
-
-        
-        // validator for wordGroup
-            //make sure word group doesn't already exists
-            
-        // if req.body.newWordGroup
-            // create new WordGroup schema
-                // title: newWordGroup
-                // unuhi: newWordGroupUnuhi
         
         // create new object for audio
             // var audioObject1 = {title: req.body.audioTitleOne, body: req.body.audioOne}
@@ -63,7 +54,7 @@ module.exports = app => {
         // validator for new huaolelo
 
         //create a new Huaolelo
-            // huaolelo: req.body.huaoleloHou
+            // huaolelo: req.body.huaoleloHou.toUpperCase()
             // unuhi: req.body.unuhi
             // wordGroups: req.body.wordGroup //this is where we connect to the WordGroup Schema
             // audio: allImageArray,
@@ -94,27 +85,27 @@ module.exports = app => {
         if (!req.body) {
             return res.send({error:'there is no body in the request'})
         }
+    
+        console.log('aloohhha , ', req.body)
+        // const { newWordGroup, newWordGroupUnuhi } = req.body
+        // const existingTitle = await WordGroup.find({title: newWordGroup})
 
-        const { newWordGroup, newWordGroupUnuhi } = req.body
-        const existingTitle = await WordGroup.find({title: newWordGroup})
+        // if (existingTitle.length) {
+        //     return res.send({error:'title already exists in the database'})
+        // } 
 
-        console.log('exitingtitle , ', existingTitle)
-        if (existingTitle.length) {
-            return res.send({error:'title already exists in the database'})
-        } 
+        // const wordGroup = new WordGroup({
+        //     title: newWordGroup.toUpperCase(),
+        //     unuhi: newWordGroupUnuhi
+        // })
 
-        const wordGroup = new WordGroup({
-            title: newWordGroup,
-            unuhi: newWordGroupUnuhi
-        })
-
-        try {
-            await wordGroup.save()
-            const wordgroups = await WordGroup.find({}).select({})
-            res.send(wordgroups)
-          } catch (err) {
-            res.status(422).send(err)
-          }
+        // try {
+        //     await wordGroup.save()
+        //     const wordgroups = await WordGroup.find({}).select({})
+        //     res.send(wordgroups)
+        //   } catch (err) {
+        //     res.status(422).send(err)
+        //   }
     })
 
     app.delete('/api/wordGroups', async (req, res) => {
