@@ -1,3 +1,7 @@
+/// need to validate frontend that huaoleloHOu
+///doesn't already exist
+///throw error
+
 import React, { Component } from 'react'
 import 'materialize-css';
 import { TextInput, Button, ProgressBar, Switch } from 'react-materialize';
@@ -13,8 +17,11 @@ class NewHuaoleloCard extends Component {
         this.handleSwitch = this.handleSwitch.bind(this)
         this.onSubmit = this.onSubmit.bind(this)
         this.renderSubmitButton = this.renderSubmitButton.bind(this)
+        this.renderContent = this.renderContent.bind(this)
         this.state = {
             isLoading: false,
+            isShowingInput: false,
+
             huaoleloHou: '',
             unuhi: '',
             wordGroup: [],
@@ -80,8 +87,11 @@ class NewHuaoleloCard extends Component {
         this.setState({ ...this.state, [evt.target.name]: value });
     }
     onSubmit() {
-        this.setState({ isLoading: !this.state.isLoading })
+        this.setState({ isLoading: true})
         this.props.submitHuaolelo(this.state)
+        .then(() => {
+            this.setState({ huaoleloHou: '', unuhi: '', isShowingInput: false, errorMessage: '', isLoading: false})
+        })
         
     }
     handleNewWordGroup(event) {
@@ -124,89 +134,87 @@ class NewHuaoleloCard extends Component {
             return <Button onClick={this.onSubmit}>submit</Button>
         }
     }
-    render() {
-
-        const { isLoading } = this.state
-        const content = () => {
-            switch (true) {
-                case isLoading:
-                    return <ProgressBar />
-                default:
-                    return (<h2>hi</h2>)
-            }
+    renderContent(){
+        if (this.state.isLoading) {
+            return (<div><h5>New Huaolelo</h5><ProgressBar /></div>)
         }
-
-        const newWordGroupContent = () => {
-            const { isShowingNewWordContent } = this.state
-            switch (isShowingNewWordContent) {
-                case true:
-                    return (
+        switch (this.state.isShowingInput) {
+            case false:
+                return (
+                    <div className="card-content">
+                        <Button onClick={() => this.setState({ isShowingInput: !this.state.isShowingInput })}>
+                            New Huaolelo Card
+                        </Button>
+                    </div>
+                )
+            case true:
+                return (
+                    <div>
+                        <h5>New Huaolelo Card</h5>
+                    
+                        <TextInput id="huaoleloHou" label="Huaolelo Hou" name="huaoleloHou" onChange={this.handleHuaoleloHou} />
+                        <TextInput id="unuhi" label="unuhi" name="unuhi" onChange={this.handleChange} />
+                    
                         <div>
-                            <TextInput id="newWordGroup" label="newWordGroup" name="newWordGroup" onChange={this.handleNewWordGroup} />
-                            <TextInput id="newWordGroupUnuhi" label="newWordGroupUnuhi" name="newWordGroupUnuhi" onChange={this.handleChange} />
+                            {/* <TextInput id="audioTitleOne" label="audioTitleOne" name="audioTitleOne" onChange={this.handleChange} />
+                            <TextInput id="audioOne" label="audioOne" name="audioOne" onChange={this.handleChange} />
+                            <TextInput id="audioTitleTwo" label="audioTitleTwo" name="audioTitleTwo" onChange={this.handleChange} />
+                            <TextInput id="audioTwo" label="audioTwo" name="audioTwo" onChange={this.handleChange} />
+                            <TextInput id="audioTitleThree" label="audioTitleThree" name="audioTitleThree" onChange={this.handleChange} />
+                            <TextInput id="audioThree" label="audioThree" name="audioThree" onChange={this.handleChange} />
+                            <TextInput id="audioTitleFour" label="audioTitleFour" name="audioTitleFour" onChange={this.handleChange} />
+                            <TextInput id="audioFour" label="audioFour" name="audioFour" onChange={this.handleChange} />
+                            
+                            <TextInput id="imageTitleOne" label="imageTitleOne" name="imageTitleOne" onChange={this.handleChange} />
+                            <TextInput id="imageOne" label="imageOne" name="imageOne" onChange={this.handleChange} />
+                            <TextInput id="imageTitleTwo" label="imageTitleTwo" name="imageTitleTwo" onChange={this.handleChange} />
+                            <TextInput id="imageTwo" label="imageTwo" name="imageTwo" onChange={this.handleChange} />
+                            <TextInput id="imageTitleThree" label="imageTitleThree" name="imageTitleThree" onChange={this.handleChange} />
+                            <TextInput id="imageThree" label="imageThree" name="imageThree" onChange={this.handleChange} />
+                            
+                            <TextInput id="exampleOne" label="exampleOne" name="exampleOne" onChange={this.handleChange} />
+                            <TextInput id="exampleTwo" label="exampleTwo" name="exampleTwo" onChange={this.handleChange} />
+                            <TextInput id="exampleThree" label="exampleThree" name="exampleThree" onChange={this.handleChange} />
+                            
+                            <TextInput id="audioExampleTitleOne" label="audioExampleTitleOne" name="audioExampleTitleOne" onChange={this.handleChange} />
+                            <TextInput id="audioExampleOne" label="audioExampleOne" name="audioExampleOne" onChange={this.handleChange} />
+                            <TextInput id="audioExampleTitleTwo" label="audioExampleTitleTwo" name="audioExampleTitleTwo" onChange={this.handleChange} />
+                            <TextInput id="audioExampleTwo" label="audioExampleTwo" name="audioExampleTwo" onChange={this.handleChange} />
+                            <TextInput id="audioExampleTitleThree" label="audioExampleTitleThree" name="audioExampleTitleThree" onChange={this.handleChange} />
+                        <TextInput id="audioExampleThree" label="audioExampleThree" name="audioExampleThree" onChange={this.handleChange} /> */}
                         </div>
-                    )
-                default:
-                    return null
-            }
+                    
+                        {this.renderWordList()}
+                    
+                        <Switch
+                            id="Switch-11"
+                            offLabel="Off"
+                            onChange={this.handleSwitch}
+                            onLabel="other..."
+                            value="other..."
+                        />
+                        <div>
+                            <p style={{ color: 'red' }}>
+                                {this.state.errorMessage}
+                            </p>
+                        </div>
+                        {this.renderSubmitButton()}
+                        <Button className="btn red darken-4" onClick={() => this.setState({ isShowingInput: !this.state.isShowingInput, huaoleloHou: '', unuhi: '' })}>
+                            Cancel
+                        </Button>
+                    </div>
+                )
+            default:
+                return null
         }
+    }
+    render() {
 
         return (
             <div className="card darken-1">
                 <div className="card-content" >
 
-                    <h5>New Huaolelo Card</h5>
-
-                    <TextInput id="huaoleloHou" label="Huaolelo Hou" name="huaoleloHou" onChange={this.handleHuaoleloHou} />
-                    <TextInput id="unuhi" label="unuhi" name="unuhi" onChange={this.handleChange} />
-
-                    <div>
-                        {/* <TextInput id="audioTitleOne" label="audioTitleOne" name="audioTitleOne" onChange={this.handleChange} />
-                        <TextInput id="audioOne" label="audioOne" name="audioOne" onChange={this.handleChange} />
-                        <TextInput id="audioTitleTwo" label="audioTitleTwo" name="audioTitleTwo" onChange={this.handleChange} />
-                        <TextInput id="audioTwo" label="audioTwo" name="audioTwo" onChange={this.handleChange} />
-                        <TextInput id="audioTitleThree" label="audioTitleThree" name="audioTitleThree" onChange={this.handleChange} />
-                        <TextInput id="audioThree" label="audioThree" name="audioThree" onChange={this.handleChange} />
-                        <TextInput id="audioTitleFour" label="audioTitleFour" name="audioTitleFour" onChange={this.handleChange} />
-                        <TextInput id="audioFour" label="audioFour" name="audioFour" onChange={this.handleChange} />
-                        
-                        <TextInput id="imageTitleOne" label="imageTitleOne" name="imageTitleOne" onChange={this.handleChange} />
-                        <TextInput id="imageOne" label="imageOne" name="imageOne" onChange={this.handleChange} />
-                        <TextInput id="imageTitleTwo" label="imageTitleTwo" name="imageTitleTwo" onChange={this.handleChange} />
-                        <TextInput id="imageTwo" label="imageTwo" name="imageTwo" onChange={this.handleChange} />
-                        <TextInput id="imageTitleThree" label="imageTitleThree" name="imageTitleThree" onChange={this.handleChange} />
-                        <TextInput id="imageThree" label="imageThree" name="imageThree" onChange={this.handleChange} />
-                        
-                        <TextInput id="exampleOne" label="exampleOne" name="exampleOne" onChange={this.handleChange} />
-                        <TextInput id="exampleTwo" label="exampleTwo" name="exampleTwo" onChange={this.handleChange} />
-                        <TextInput id="exampleThree" label="exampleThree" name="exampleThree" onChange={this.handleChange} />
-                        
-                        <TextInput id="audioExampleTitleOne" label="audioExampleTitleOne" name="audioExampleTitleOne" onChange={this.handleChange} />
-                        <TextInput id="audioExampleOne" label="audioExampleOne" name="audioExampleOne" onChange={this.handleChange} />
-                        <TextInput id="audioExampleTitleTwo" label="audioExampleTitleTwo" name="audioExampleTitleTwo" onChange={this.handleChange} />
-                        <TextInput id="audioExampleTwo" label="audioExampleTwo" name="audioExampleTwo" onChange={this.handleChange} />
-                        <TextInput id="audioExampleTitleThree" label="audioExampleTitleThree" name="audioExampleTitleThree" onChange={this.handleChange} />
-                    <TextInput id="audioExampleThree" label="audioExampleThree" name="audioExampleThree" onChange={this.handleChange} /> */}
-                    </div>
-
-                    {this.renderWordList()}
-
-                    <Switch
-                        id="Switch-11"
-                        offLabel="Off"
-                        onChange={this.handleSwitch}
-                        onLabel="other..."
-                        value="other..."
-                    />
-
-                    {newWordGroupContent()}
-                    <div>
-                        <p style={{ color: 'red' }}>
-                            {this.state.errorMessage}
-                        </p>
-                    </div>
-                    {this.renderSubmitButton()}
-                    {content()}
+                    {this.renderContent()}
 
                 </div>
             </div>
