@@ -5,12 +5,8 @@
 import React, { Component } from 'react'
 import 'materialize-css';
 import { TextInput, Button, ProgressBar, Switch } from 'react-materialize';
-import Select from 'react-select'
-import makeAnimated from 'react-select/animated'
 import { connect } from 'react-redux'
 import { submitHuaolelo } from '../../actions'
-
-const animatedComponents = makeAnimated()
 
 class NewHuaoleloCard extends Component {
     constructor(props) {
@@ -21,12 +17,10 @@ class NewHuaoleloCard extends Component {
         this.handleSwitch = this.handleSwitch.bind(this)
         this.onSubmit = this.onSubmit.bind(this)
         this.renderSubmitButton = this.renderSubmitButton.bind(this)
-        this.renderReactSelect = this.renderReactSelect.bind(this)
         this.renderContent = this.renderContent.bind(this)
         this.state = {
             isLoading: false,
             isShowingInput: false,
-            selectedOption: null,
 
             huaoleloHou: '',
             unuhi: '',
@@ -69,23 +63,8 @@ class NewHuaoleloCard extends Component {
             errorMessage: ''
         }
     }
-    handleChangeSelect = selectedOption => {
-        this.setState({selectedOption})
-        console.log('option selected:', selectedOption)
-    }
-    renderReactSelect(){
-        return (
-            <Select
-                closeMenuOnSelect={false}
-                components={animatedComponents}
-                defaultValue={[]}
-                isMulti
-                options={this.props.wordGroups}
-            />
-        )
-    }
     renderWordList() {
-        return this.props.wordGroups.sort(function(firstWordGroup,secondWordGroup) {
+        return this.props.wordGroups.sort(function (firstWordGroup, secondWordGroup) {
             return firstWordGroup.title.localeCompare(secondWordGroup.title)
         }).map(wordgroup => {
             return (
@@ -108,12 +87,12 @@ class NewHuaoleloCard extends Component {
         this.setState({ ...this.state, [evt.target.name]: value });
     }
     onSubmit() {
-        this.setState({ isLoading: true})
+        this.setState({ isLoading: true })
         this.props.submitHuaolelo(this.state)
-        .then(() => {
-            this.setState({ huaoleloHou: '', unuhi: '', isShowingInput: false, errorMessage: '', isLoading: false})
-        })
-        
+            .then(() => {
+                this.setState({ huaoleloHou: '', unuhi: '', isShowingInput: false, errorMessage: '', isLoading: false })
+            })
+
     }
     handleNewWordGroup(event) {
         const title = (element) => element.title.toLowerCase() === event.target.value.toLowerCase()
@@ -155,7 +134,7 @@ class NewHuaoleloCard extends Component {
             return <Button onClick={this.onSubmit}>submit</Button>
         }
     }
-    renderContent(){
+    renderContent() {
         if (this.state.isLoading) {
             return (<div><h5>New Huaolelo</h5><ProgressBar /></div>)
         }
@@ -172,10 +151,10 @@ class NewHuaoleloCard extends Component {
                 return (
                     <div>
                         <h5>New Huaolelo Card</h5>
-                    
+
                         <TextInput id="huaoleloHou" label="Huaolelo Hou" name="huaoleloHou" onChange={this.handleHuaoleloHou} />
                         <TextInput id="unuhi" label="unuhi" name="unuhi" onChange={this.handleChange} />
-                    
+
                         <div>
                             {/* <TextInput id="audioTitleOne" label="audioTitleOne" name="audioTitleOne" onChange={this.handleChange} />
                             <TextInput id="audioOne" label="audioOne" name="audioOne" onChange={this.handleChange} />
@@ -204,9 +183,9 @@ class NewHuaoleloCard extends Component {
                             <TextInput id="audioExampleTitleThree" label="audioExampleTitleThree" name="audioExampleTitleThree" onChange={this.handleChange} />
                         <TextInput id="audioExampleThree" label="audioExampleThree" name="audioExampleThree" onChange={this.handleChange} /> */}
                         </div>
-                    
+
                         {this.renderWordList()}
-                    
+
                         <Switch
                             id="Switch-11"
                             offLabel="Off"
@@ -219,7 +198,6 @@ class NewHuaoleloCard extends Component {
                                 {this.state.errorMessage}
                             </p>
                         </div>
-                        {this.renderReactSelect()}
                         {this.renderSubmitButton()}
                         <Button className="btn red darken-4" onClick={() => this.setState({ isShowingInput: !this.state.isShowingInput, huaoleloHou: '', unuhi: '' })}>
                             Cancel
