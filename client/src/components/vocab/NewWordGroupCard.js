@@ -81,7 +81,7 @@ export class NewWordGroupCard extends Component {
                         <TextInput id="newWordGroup" label="newWordGroup" name="newWordGroup" value={this.state.newWordGroup} onChange={this.handleChange} />
                         <TextInput id="newWordGroupUnuhi" label="newWordGroupUnuhi" name="newWordGroupUnuhi" value={this.state.newWordGroupUnuhi} onChange={this.handleChange} />
                         {button}
-                        <Button className="btn red darken-4" onClick={() => this.setState({ isShowingInput: !this.state.isShowingInput, newWordGroup: '', newWordGroupUnuhi: '' })}>
+                        <Button className="btn red darken-4" onClick={() => this.setState({ isShowingInput: !this.state.isShowingInput, newWordGroup: '', newWordGroupUnuhi: '', errorMessage: '' })}>
                             Cancel
                         </Button>
                     </div>
