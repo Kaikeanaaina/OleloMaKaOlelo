@@ -8,10 +8,11 @@ import NewWordGroupCard from './NewWordGroupCard'
 import NewHuaoleloCard from './NewHuaoleloCard'
 
 class WordGroupsList extends Component {
-  constructor(props){
+  constructor(props) {
     super(props)
-    this.state={
-      isLoading: false
+    this.state = {
+      isLoading: false,
+      isShowingConfirmDeleteButton: false
     }
   }
   componentDidMount() {
@@ -53,13 +54,16 @@ class WordGroupsList extends Component {
   }
   handleButton(title, action) {
     console.log('firstThing', title, action)
-    this.setState({isLoading: !this.state.isLoading})
+    this.setState({ isLoading: !this.state.isLoading })
 
-    switch(action){
-      case('delete'):
+    switch (action) {
+      case ('delete'):
         this.props.deleteWordGroup(title)
+          .then(() => {
+            this.setState({ isLoading: false })
+          })
         return null
-      case('edit'):
+      case ('edit'):
         this.props.editWordGroup(title)
         return null
       default:
