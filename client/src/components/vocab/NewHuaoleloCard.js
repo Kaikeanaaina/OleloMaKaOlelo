@@ -5,8 +5,12 @@
 import React, { Component } from 'react'
 import 'materialize-css';
 import { TextInput, Button, ProgressBar, Switch } from 'react-materialize';
+import Select from 'react-select'
+import makeAnimated from 'react-select/animated'
 import { connect } from 'react-redux'
 import { submitHuaolelo } from '../../actions'
+
+const animatedComponents = makeAnimated()
 
 class NewHuaoleloCard extends Component {
     constructor(props) {
@@ -17,10 +21,12 @@ class NewHuaoleloCard extends Component {
         this.handleSwitch = this.handleSwitch.bind(this)
         this.onSubmit = this.onSubmit.bind(this)
         this.renderSubmitButton = this.renderSubmitButton.bind(this)
+        this.renderReactSelect = this.renderReactSelect.bind(this)
         this.renderContent = this.renderContent.bind(this)
         this.state = {
             isLoading: false,
             isShowingInput: false,
+            selectedOption: null,
 
             huaoleloHou: '',
             unuhi: '',
@@ -62,6 +68,21 @@ class NewHuaoleloCard extends Component {
             isShowingNewWordContent: false,
             errorMessage: ''
         }
+    }
+    handleChangeSelect = selectedOption => {
+        this.setState({selectedOption})
+        console.log('option selected:', selectedOption)
+    }
+    renderReactSelect(){
+        return (
+            <Select
+                closeMenuOnSelect={false}
+                components={animatedComponents}
+                defaultValue={[]}
+                isMulti
+                options={this.props.wordGroups}
+            />
+        )
     }
     renderWordList() {
         return this.props.wordGroups.sort(function(firstWordGroup,secondWordGroup) {
@@ -198,6 +219,7 @@ class NewHuaoleloCard extends Component {
                                 {this.state.errorMessage}
                             </p>
                         </div>
+                        {this.renderReactSelect()}
                         {this.renderSubmitButton()}
                         <Button className="btn red darken-4" onClick={() => this.setState({ isShowingInput: !this.state.isShowingInput, huaoleloHou: '', unuhi: '' })}>
                             Cancel
