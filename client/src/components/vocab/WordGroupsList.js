@@ -47,11 +47,12 @@ class WordGroupsList extends Component {
   }
   renderWordGroups() {
     return this.props.wordGroups.sort().map(wordgroup => {
-      const { title } = wordgroup
+      const { title, unuhi } = wordgroup
       return (
         <div className="card darken-1" key={wordgroup._id}>
           <div className="card-content">
             <span className="card-title"> {title}</span>
+            <span> {unuhi}</span>
             {this.state.isLoading ? <ProgressBar /> : null}
             <div>
               {!this.state.isShowingEditForm
@@ -67,8 +68,8 @@ class WordGroupsList extends Component {
                 />
                 :
                 <div>
-                  <TextInput id="editWordGroup" label="editWordGroup" name="editWordGroup" value={this.state.editWordGroup} onChange={this.handleInputChange} />
-                  <TextInput id="editWordGroupUnuhi" label="editWordGroupUnuhi" name="editWordGroupUnuhi" value={this.state.editWordGroupUnuhi} onChange={this.handleInputChange} />
+                  <TextInput id="editWordGroup" label="editWordGroup" name="editWordGroup" placeholder={title} value={this.state.editWordGroup} onChange={this.handleInputChange} />
+                  <TextInput id="editWordGroupUnuhi" label="editWordGroupUnuhi" name="editWordGroupUnuhi" placeholder={unuhi} value={this.state.editWordGroupUnuhi} onChange={this.handleInputChange} />
                   <p style={{color:'red'}}>{this.state.errorMessage}</p>
                   {!this.state.errorMessage && this.state.editWordGroup && this.state.editWordGroupUnuhi
                   ? 
@@ -77,7 +78,7 @@ class WordGroupsList extends Component {
                       small
                       node="button"
                       waves="light"
-                      onClick={this.handleButton.bind(this, { editWordGroup:this.state.editWordGroup, editWordGroupUnuhi:this.state.editWordGroupUnuhi }, 'edit')}
+                      onClick={this.handleButton.bind(this, { editWordGroup:this.state.editWordGroup, editWordGroupUnuhi:this.state.editWordGroupUnuhi, title }, 'edit')}
                     >
                       Confirm Edit {title}
                     </Button>
