@@ -36,16 +36,40 @@ class WordGroupsList extends Component {
                 waves="light"
                 onClick={this.handleButton.bind(this, { title }, 'edit')}
               />
-              <Button
-                className="red"
-                floating
-                icon={<Icon>delete</Icon>}
-                small
-                node="button"
-                waves="light"
-                onClick={this.handleButton.bind(this, { title }, 'delete')}
-              />
 
+              {!this.state.isShowingConfirmDeleteButton
+                ?
+                <Button
+                  className="red"
+                  floating
+                  icon={<Icon>delete</Icon>}
+                  small
+                  node="button"
+                  waves="light"
+                  onClick={() => this.setState({isShowingConfirmDeleteButton: true})}
+                />
+                :
+                <div>
+                  <Button
+                    className="red"
+                    small
+                    node="button"
+                    waves="light"
+                    onClick={this.handleButton.bind(this, { title }, 'delete')}
+                  >
+                    Confirm Delete {title}
+                  </Button>
+                  <Button
+
+                    small
+                    node="button"
+                    waves="light"
+                    onClick={() => this.setState({isShowingConfirmDeleteButton: false})}
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              }
             </div>
           </div>
         </div>
