@@ -131,11 +131,51 @@ module.exports = app => {
     })
 
     app.put('/api/wordGroup', async (req, res) => {
-        console.log('2222222 editing')
-        console.log('editing wordgroup', req.body)
 
-        const wordgroups = await WordGroup.find({}).select({})
-        return res.send(wordgroups)
+        if (!req.body) {
+            return res.send({ error: 'there is no body in the request' })
+        }
+
+        const { editWordGroup, editWordGroupUnuhi, title } = req.body
+
+        const arrayString = editWordGroup.split('')
+        const firstLetterWillCapital = arrayString[0].toUpperCase()
+        arrayString.splice(0, 1, firstLetterWillCapital)
+
+        var readyToCapitalize = false
+        var theIndex = 0
+
+        arrayString.forEach((element) => {
+            if (element === ' ') {
+                theIndex++
+                return readyToCapitalize = true
+            }
+            if (readyToCapitalize) {
+                arrayString.splice(theIndex, 1, element.toUpperCase())
+                readyToCapitalize = false
+                theIndex++
+                return
+            }
+            theIndex++
+            return
+        })
+
+        const joiningAllTheStringLetters = arrayString.join('')
+
+        const wordGroupToEdit = await WordGroup.find({ title })
+
+        if (!wordGroupToEdit.length) {
+            return res.send({ error: 'title does not exists' })
+        }
+
+        try {
+            await WordGroup.updateMany({ title }, { $set: { title: joiningAllTheStringLetters, unuhi: editWordGroupUnuhi } })
+
+            const wordgroups = await WordGroup.find({}).select({})
+            return res.send(wordgroups)
+        } catch (err) {
+            res.status(422).send(err)
+        }
     })
 
     app.delete('/api/wordGroup/:id', async (req, res) => {
