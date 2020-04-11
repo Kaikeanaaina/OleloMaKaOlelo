@@ -77,14 +77,13 @@ class WordGroupsList extends Component {
     })
   }
   handleButton(title, action) {
-    console.log('firstThing', title, action)
     this.setState({ isLoading: !this.state.isLoading })
 
     switch (action) {
       case ('delete'):
         this.props.deleteWordGroup(title)
           .then(() => {
-            this.setState({ isLoading: false })
+            this.setState({ isLoading: false, isShowingConfirmDeleteButton: false })
           })
         return null
       case ('edit'):
