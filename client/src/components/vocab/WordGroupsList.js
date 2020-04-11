@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import 'materialize-css';
-import { Button, Icon, ProgressBar } from 'react-materialize';
+import { Button, Icon, ProgressBar, TextInput } from 'react-materialize';
 import { connect } from 'react-redux'
 import { fetchWordGroups, editWordGroup, deleteWordGroup } from '../../actions'
 
@@ -10,13 +10,40 @@ import NewHuaoleloCard from './NewHuaoleloCard'
 class WordGroupsList extends Component {
   constructor(props) {
     super(props)
+
+    this.handleInputChange = this.handleInputChange.bind(this)
     this.state = {
       isLoading: false,
-      isShowingConfirmDeleteButton: false
+      isShowingConfirmDeleteButton: false,
+      isShowingEditForm: false,
+      isShowingConfirmEditButton: false,
+      editWordGroup: '',
+      editWordGroupUnuhi: '',
+      errorMessage: ''
     }
   }
   componentDidMount() {
     this.props.fetchWordGroups()
+  }
+  handleInputChange(evt) {
+    let value = evt.target.value;
+    switch (evt.target.id) {
+      case 'editWordGroup':
+        const title = (element) => element.title.toLowerCase() === evt.target.value.toLowerCase()
+        const newGroupArray = this.props.wordGroups.some(title)
+
+        this.setState({ ...this.state, [evt.target.name]: value, errorMessage: '' });
+
+        if (newGroupArray) {
+          return this.setState({ errorMessage: 'Word Group title already exists' })
+        }
+
+        return
+      case 'editWordGroupUnuhi':
+        return this.setState({ ...this.state, [evt.target.name]: value });
+      default:
+        return false
+    }
   }
   renderWordGroups() {
     return this.props.wordGroups.sort().map(wordgroup => {
@@ -27,15 +54,47 @@ class WordGroupsList extends Component {
             <span className="card-title"> {title}</span>
             {this.state.isLoading ? <ProgressBar /> : null}
             <div>
-              <Button
-                className="orange"
-                floating
-                icon={<Icon>edit</Icon>}
-                small
-                node="button"
-                waves="light"
-                onClick={this.handleButton.bind(this, { title }, 'edit')}
-              />
+              {!this.state.isShowingEditForm
+                ?
+                <Button
+                  className="orange"
+                  floating
+                  icon={<Icon>edit</Icon>}
+                  small
+                  node="button"
+                  waves="light"
+                  onClick={() => this.setState({ isShowingEditForm: true })}
+                />
+                :
+                <div>
+                  <TextInput id="editWordGroup" label="editWordGroup" name="editWordGroup" value={this.state.editWordGroup} onChange={this.handleInputChange} />
+                  <TextInput id="editWordGroupUnuhi" label="editWordGroupUnuhi" name="editWordGroupUnuhi" value={this.state.editWordGroupUnuhi} onChange={this.handleInputChange} />
+                  <p style={{color:'red'}}>{this.state.errorMessage}</p>
+                  {!this.state.errorMessage && this.state.editWordGroup && this.state.editWordGroupUnuhi
+                  ? 
+                    <Button
+                      className="orange"
+                      small
+                      node="button"
+                      waves="light"
+                      onClick={this.handleButton.bind(this, { editWordGroup:this.state.editWordGroup, editWordGroupUnuhi:this.state.editWordGroupUnuhi }, 'edit')}
+                    >
+                      Confirm Edit {title}
+                    </Button>
+                  :
+                  null
+                  }
+
+                  <Button
+                    small
+                    node="button"
+                    waves="light"
+                    onClick={() => this.setState({ isShowingEditForm: false, editWordGroup: '', editWordGroupUnuhi: '', errorMessage: '' })}
+                  >
+                    Cancel Edit
+                  </Button>
+                </div>
+              }
 
               {!this.state.isShowingConfirmDeleteButton
                 ?
@@ -46,7 +105,7 @@ class WordGroupsList extends Component {
                   small
                   node="button"
                   waves="light"
-                  onClick={() => this.setState({isShowingConfirmDeleteButton: true})}
+                  onClick={() => this.setState({ isShowingConfirmDeleteButton: true })}
                 />
                 :
                 <div>
@@ -64,7 +123,7 @@ class WordGroupsList extends Component {
                     small
                     node="button"
                     waves="light"
-                    onClick={() => this.setState({isShowingConfirmDeleteButton: false})}
+                    onClick={() => this.setState({ isShowingConfirmDeleteButton: false })}
                   >
                     Cancel
                   </Button>
@@ -88,6 +147,9 @@ class WordGroupsList extends Component {
         return null
       case ('edit'):
         this.props.editWordGroup(title)
+          .then(() => {
+            this.setState({ isLoading: false, isShowingEditForm: false, isShowingConfirmEditButton: false, editWordGroup: '', editWordGroupUnuhi: '' })
+          })
         return null
       default:
         return null
