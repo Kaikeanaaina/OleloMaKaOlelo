@@ -13,7 +13,6 @@ class NewHuaoleloCard extends Component {
         super(props);
         this.handleHuaoleloHou = this.handleHuaoleloHou.bind(this)
         this.handleChange = this.handleChange.bind(this)
-        this.handleNewWordGroup = this.handleNewWordGroup.bind(this)
         this.handleSwitch = this.handleSwitch.bind(this)
         this.onSubmit = this.onSubmit.bind(this)
         this.renderSubmitButton = this.renderSubmitButton.bind(this)
@@ -25,8 +24,6 @@ class NewHuaoleloCard extends Component {
             huaoleloHou: '',
             unuhi: '',
             wordGroup: [],
-            newWordGroup: '',
-            newWordGroupUnuhi: '',
 
             audioTitleOne: '',
             audioOne: '',
@@ -94,22 +91,7 @@ class NewHuaoleloCard extends Component {
             })
 
     }
-    handleNewWordGroup(event) {
-        const title = (element) => element.title.toLowerCase() === event.target.value.toLowerCase()
-        const newGroupArray = this.props.wordGroups.some(title)
-        if (newGroupArray) {
-            this.setState({ errorMessage: 'Word Group title already exists' })
-        } else {
-            this.setState({ errorMessage: '', newWordGroup: event.target.value })
-        }
-    }
     handleSwitch(event) {
-        if (event.target.value === 'other...' && event.target.checked) {
-            return this.setState({ isShowingNewWordContent: true })
-        } else if (event.target.value === 'other...' && !event.target.checked) {
-            return this.setState({ isShowingNewWordContent: false, newWordGroup: '', newWordGroupUnuhi: '' })
-        }
-
         switch (event.target.checked) {
             case false:
                 const finding = this.state.wordGroup.indexOf(event.target.value)
@@ -123,14 +105,7 @@ class NewHuaoleloCard extends Component {
         }
     }
     renderSubmitButton() {
-        if (this.state.newWordGroup && this.state.newWordGroupUnuhi && !this.state.errorMessage) {
-            return <Button onClick={this.onSubmit}>submit</Button>
-        }
-
-        if (this.state.isShowingNewWordContent) {
-            return false
-        }
-        if (this.state.huaoleloHou && this.state.wordGroup.length) {
+        if (this.state.huaoleloHou && this.state.unuhi && this.state.wordGroup.length) {
             return <Button onClick={this.onSubmit}>submit</Button>
         }
     }
@@ -186,13 +161,6 @@ class NewHuaoleloCard extends Component {
 
                         {this.renderWordList()}
 
-                        <Switch
-                            id="Switch-11"
-                            offLabel="Off"
-                            onChange={this.handleSwitch}
-                            onLabel="other..."
-                            value="other..."
-                        />
                         <div>
                             <p style={{ color: 'red' }}>
                                 {this.state.errorMessage}
