@@ -7,7 +7,7 @@ import wordGroupReducer from './wordGroupReducer'
 export default combineReducers({
   auth: authReducer,
   form: reduxForm,
-  huaolelo: huaoleloReducer,
+  naHuaolelo: huaoleloReducer,
   wordGroups: wordGroupReducer
 })
 
