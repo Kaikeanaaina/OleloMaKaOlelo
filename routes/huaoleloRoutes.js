@@ -92,21 +92,32 @@ module.exports = app => {
         arrayString.splice(0, 1, firstLetterWillCapital)
 
         var readyToCapitalize = false
-        var theIndex = 0
+        var theIndexCapitalize = 0
 
         arrayString.forEach((element) => {
             if (element === ' ') {
-                theIndex++
+                theIndexCapitalize++
                 return readyToCapitalize = true
             }
             if (readyToCapitalize) {
-                arrayString.splice(theIndex, 1, element.toUpperCase())
+                arrayString.splice(theIndexCapitalize, 1, element.toUpperCase())
                 readyToCapitalize = false
-                theIndex++
+                theIndexCapitalize++
                 return
             }
-            theIndex++
+            theIndexCapitalize++
             return
+        })
+
+        var theIndexOkina = 0
+        arrayString.forEach((element) => {
+            if (element === "'"){
+                arrayString.splice(theIndexOkina, 1, "ʻ")
+                theIndexOkina++
+                return
+            }
+            theIndexOkina++
+            return 
         })
 
         const joiningAllTheStringLetters = arrayString.join('')
@@ -158,6 +169,17 @@ module.exports = app => {
             }
             theIndex++
             return
+        })
+
+        var theIndexOkina = 0
+        arrayString.forEach((element) => {
+            if (element === "'"){
+                arrayString.splice(theIndexOkina, 1, "ʻ")
+                theIndexOkina++
+                return
+            }
+            theIndexOkina++
+            return 
         })
 
         const joiningAllTheStringLetters = arrayString.join('')
