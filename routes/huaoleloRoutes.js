@@ -14,64 +14,101 @@ module.exports = app => {
     })
 
     app.post('/api/huaolelo', requireLogin, async (req, res) => {
-        console.log(req.body)
-        console.log(req.body.wordGroup)
+        const { huaoleloHou, unuhi, wordGroup } = req.body
+        const huaoleloInDatabase = await Huaolelo.find({ huaoleloHou }).select({})
 
-        const wordgroups = await WordGroup.find({ title: req.body.wordGroup[0] }).select({})
-        console.log('results , ', req.body)
-        console.log('aloha ,', wordgroups)
-        const { huaolelo, unuhi, wordGroup } = req.body
+        if(huaoleloInDatabase.length){
+            return res.send({error: 'HuaOlelo already exists'})
+        }
 
-        // create new object for audio
-        // var audioObject1 = {title: req.body.audioTitleOne, body: req.body.audioOne}
-        // var audioObject2 = {title: req.body.audioTitleTwo, body: req.body.audioTwo}
-        // var audioObject3 = {title: req.body.audioTitleThree, body: req.body.audioThree}
-        // var audioObject4 = {title: req.body.audioObjectFour, body: req.body.audioFour}
-        // var allAudioArray = [audioObject1, audioObject2, audioObject3, audioObject4]
+        const arrayString = huaoleloHou.split('')
+        const firstLetterWillCapital = arrayString[0].toUpperCase()
+        arrayString.splice(0, 1, firstLetterWillCapital)
 
-        // create new object for image        
-        // var imageObject1 = {title: req.body.imageTitleOne, body: req.body.imageOne}
-        // var imageObject2 = {title: req.body.imageTitleTwo, body: req.body.imageTwo}
-        // var imageObject3 = {title: req.body.imageTitleThree, body: req.body.imageThree}
-        // var imageObject4 = {title: req.body.imageTitleFour, body: req.body.imageFour}
-        // var allImageArray = [imageObject1, imageObject2, imageObject3, imageObject4]
+        var readyToCapitalize = false
+        var theIndexCapitalize = 0
 
-        // create array of examples
-        // var exampleArray = [
-        // req.body.exampleOne, 
-        // req.body.exampleTwo, 
-        // req.body.exampleThree, 
-        // req.body.exampleFour
-        // ]
+        arrayString.forEach((element) => {
+            if (element === ' ') {
+                theIndexCapitalize++
+                return readyToCapitalize = true
+            }
+            if (readyToCapitalize) {
+                arrayString.splice(theIndexCapitalize, 1, element.toUpperCase())
+                readyToCapitalize = false
+                theIndexCapitalize++
+                return
+            }
+            theIndexCapitalize++
+            return
+        })
 
-        // create new object for audio example
-        // var audioExampleObject1 = {title: req.body.audioExampleTitleOne, body: req.body.audioExampleOne}
-        // var audioExampleObject2 = {title: req.body.audioExampleTitleTwo, body: req.body.audioExampleTwo}
-        // var audioExampleObject3 = {title: req.body.audioExampleTitleThree, body: req.body.audioExampleThree}
-        // var audioExampleObject4 = {title: req.body.audioExampleTitleFour, body: req.body.audioExampleFour}
-        // var allAudioExampleArray = [audioExampleObject1, audioExampleObject2, audioExampleObject3, audioExampleObject4]
+        var theIndexOkina = 0
+        arrayString.forEach((element) => {
+            if (element === "'"){
+                arrayString.splice(theIndexOkina, 1, "ʻ")
+                theIndexOkina++
+                return
+            }
+            theIndexOkina++
+            return 
+        })
 
-        // validator for new huaolelo
+        const joiningAllTheStringLetters = arrayString.join('')
 
-        //create a new Huaolelo
-        // huaolelo: req.body.huaoleloHou.toUpperCase()
-        // unuhi: req.body.unuhi
-        // wordGroups: req.body.wordGroup //this is where we connect to the WordGroup Schema
-        // audio: allImageArray,
-        // image: allImageArray,
-        // example: exampleArray,
-        // audioExample: allAudioExampleArray
+        // // create new object for audio
+        // // var audioObject1 = {title: req.body.audioTitleOne, body: req.body.audioOne}
+        // // var audioObject2 = {title: req.body.audioTitleTwo, body: req.body.audioTwo}
+        // // var audioObject3 = {title: req.body.audioTitleThree, body: req.body.audioThree}
+        // // var audioObject4 = {title: req.body.audioObjectFour, body: req.body.audioFour}
+        // // var allAudioArray = [audioObject1, audioObject2, audioObject3, audioObject4]
 
-        // try {
-        //     await huaolelo.save()
+        // // create new object for image        
+        // // var imageObject1 = {title: req.body.imageTitleOne, body: req.body.imageOne}
+        // // var imageObject2 = {title: req.body.imageTitleTwo, body: req.body.imageTwo}
+        // // var imageObject3 = {title: req.body.imageTitleThree, body: req.body.imageThree}
+        // // var imageObject4 = {title: req.body.imageTitleFour, body: req.body.imageFour}
+        // // var allImageArray = [imageObject1, imageObject2, imageObject3, imageObject4]
 
-        //     res.send(huaolelo)
-        //   } catch (err) {
-        //     res.status(422).send(err)
-        //   }
+        // // create array of examples
+        // // var exampleArray = [
+        // // req.body.exampleOne, 
+        // // req.body.exampleTwo, 
+        // // req.body.exampleThree, 
+        // // req.body.exampleFour
+        // // ]
 
+        // // create new object for audio example
+        // // var audioExampleObject1 = {title: req.body.audioExampleTitleOne, body: req.body.audioExampleOne}
+        // // var audioExampleObject2 = {title: req.body.audioExampleTitleTwo, body: req.body.audioExampleTwo}
+        // // var audioExampleObject3 = {title: req.body.audioExampleTitleThree, body: req.body.audioExampleThree}
+        // // var audioExampleObject4 = {title: req.body.audioExampleTitleFour, body: req.body.audioExampleFour}
+        // // var allAudioExampleArray = [audioExampleObject1, audioExampleObject2, audioExampleObject3, audioExampleObject4]
 
-        return res.send(req.user)
+        // // validator for new huaolelo
+
+        // //create a new Huaolelo
+        // // huaolelo: req.body.huaoleloHou.toUpperCase()
+        // // unuhi: req.body.unuhi
+        // // wordGroups: req.body.wordGroup //this is where we connect to the WordGroup Schema
+        // // audio: allImageArray,
+        // // image: allImageArray,
+        // // example: exampleArray,
+        // // audioExample: allAudioExampleArray
+
+        const huaoleloHouCreated = new Huaolelo({
+            huaolelo: joiningAllTheStringLetters,
+            unuhi: unuhi,
+            wordGroups: wordGroup
+        })
+
+        try {
+            await huaoleloHouCreated.save()
+            const allHuaolelo = await Huaolelo.find({}).select({})
+            res.send(allHuaolelo)
+        } catch (err) {
+            res.status(422).send(err)
+        }
     })
 
     app.get('/api/wordGroups', async (req, res) => {
