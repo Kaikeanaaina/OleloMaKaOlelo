@@ -172,8 +172,8 @@ class WordGroupsList extends Component {
   render() {
     return (
       <div style={{ textAlign: 'center' }}>
-        <NewWordGroupCard />
         <NewHuaoleloCard />
+        <NewWordGroupCard />
         {this.renderWordGroups()}
       </div>
     )
