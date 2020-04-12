@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import 'materialize-css';
 import { connect } from 'react-redux'
-import { fetchWordGroups, editWordGroup, deleteWordGroup} from '../../actions'
+import { fetchWordGroups} from '../../actions'
 import WordGroupCard from './WordGroupCard'
 
 class WordGroupsList extends Component {
@@ -47,4 +47,4 @@ function mapStateToProps({ wordGroups }) {
   return { wordGroups }
 }
 
-export default connect(mapStateToProps, { fetchWordGroups, editWordGroup, deleteWordGroup })(WordGroupsList)
+export default connect(mapStateToProps, { fetchWordGroups })(WordGroupsList)
