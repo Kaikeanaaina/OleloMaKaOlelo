@@ -19,16 +19,27 @@ class WordGroupsList extends Component {
       isShowingConfirmEditButton: false,
       editWordGroup: '',
       editWordGroupUnuhi: '',
+      isTargeting:'',
       errorMessage: ''
     }
   }
   componentDidMount() {
     this.props.fetchWordGroups()
   }
+  // async handleButtonThing(object){
+  //   console.log('title , ', object.title)
+  //   await this.setState({ isShowingEditForm: true, isTargeting: object.title })
+
+  //   console.log(this.state)
+      
+  // }
+  handleButtonThing(object){
+    this.setState({ isShowingEditForm: true, isTargeting: object.title })
+  }
   handleInputChange(evt) {
     let value = evt.target.value;
-    switch (evt.target.id) {
-      case 'editWordGroup':
+    switch (evt.target.className) {
+      case `editWordGroup`:
         const title = (element) => element.title.toLowerCase() === evt.target.value.toLowerCase()
         const newGroupArray = this.props.wordGroups.some(title)
 
@@ -39,14 +50,16 @@ class WordGroupsList extends Component {
         }
 
         return
-      case 'editWordGroupUnuhi':
+      case `editWordGroupUnuhi`:
         return this.setState({ ...this.state, [evt.target.name]: value });
       default:
         return false
     }
   }
   renderWordGroups() {
-    return this.props.wordGroups.sort().map(wordgroup => {
+    return this.props.wordGroups.sort(function (firstWordGroup, secondWordGroup) {
+      return firstWordGroup.title.localeCompare(secondWordGroup.title)
+  }).map(wordgroup => {
       const { title, unuhi } = wordgroup
       return (
         <div className="card darken-1" key={wordgroup._id}>
@@ -64,12 +77,12 @@ class WordGroupsList extends Component {
                   small
                   node="button"
                   waves="light"
-                  onClick={() => this.setState({ isShowingEditForm: true })}
+                  onClick={this.handleButtonThing.bind(this, {title: title})}
                 />
                 :
                 <div>
-                  <TextInput id="editWordGroup" label="editWordGroup" name="editWordGroup" placeholder={title} value={this.state.editWordGroup} onChange={this.handleInputChange} />
-                  <TextInput id="editWordGroupUnuhi" label="editWordGroupUnuhi" name="editWordGroupUnuhi" placeholder={unuhi} value={this.state.editWordGroupUnuhi} onChange={this.handleInputChange} />
+                  <TextInput id={`editWordGroup${title}`} className={`editWordGroup`} label="editWordGroup" name="editWordGroup" placeholder={title} value={this.state.editWordGroup} onChange={this.handleInputChange} />
+                  <TextInput id={`editWordGroupUnuhi${title}`} className={`editWordGroupUnuhi`} label="editWordGroupUnuhi" name="editWordGroupUnuhi" placeholder={unuhi} value={this.state.editWordGroupUnuhi} onChange={this.handleInputChange} />
                   <p style={{color:'red'}}>{this.state.errorMessage}</p>
                   {!this.state.errorMessage && this.state.editWordGroup && this.state.editWordGroupUnuhi
                   ? 
