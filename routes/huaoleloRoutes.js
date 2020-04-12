@@ -238,9 +238,13 @@ module.exports = app => {
     })
 
     app.delete('/api/wordGroup/:id', async (req, res) => {
-        WordGroup.deleteOne({ title: req.params.id }).then(async () => {
+
+        try {
+            await WordGroup.deleteOne({ title: req.params.id })
             const wordgroups = await WordGroup.find({}).select({})
             return res.send(wordgroups)
-        })
+        } catch (err) {
+            res.status(422).send(err)
+        }
     })
 }
