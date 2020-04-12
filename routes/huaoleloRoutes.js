@@ -9,8 +9,8 @@ const WordGroup = mongoose.model('wordgroups')
 
 module.exports = app => {
     app.get('/api/huaolelo', requireLogin, async (req, res) => {
-        console.log('reached the back')
-        return
+        const naHuaolelo = await Huaolelo.find({}).select({})
+        res.send(naHuaolelo)
     })
 
     app.post('/api/huaolelo', requireLogin, async (req, res) => {
@@ -111,13 +111,12 @@ module.exports = app => {
         }
     })
 
-    app.get('/api/wordGroups', async (req, res) => {
+    app.get('/api/wordGroups', requireLogin, async (req, res) => {
         const wordgroups = await WordGroup.find({}).select({})
-
         res.send(wordgroups)
     })
 
-    app.post('/api/wordGroup', async (req, res) => {
+    app.post('/api/wordGroup', requireLogin, async (req, res) => {
 
         if (!req.body) {
             return res.send({ error: 'there is no body in the request' })
@@ -178,7 +177,7 @@ module.exports = app => {
         }
     })
 
-    app.put('/api/wordGroup', async (req, res) => {
+    app.put('/api/wordGroup', requireLogin, async (req, res) => {
 
         if (!req.body) {
             return res.send({ error: 'there is no body in the request' })
@@ -237,7 +236,7 @@ module.exports = app => {
         }
     })
 
-    app.delete('/api/wordGroup/:id', async (req, res) => {
+    app.delete('/api/wordGroup/:id', requireLogin, async (req, res) => {
 
         try {
             await WordGroup.deleteOne({ title: req.params.id })
