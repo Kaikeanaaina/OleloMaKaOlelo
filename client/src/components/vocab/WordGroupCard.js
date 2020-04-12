@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import 'materialize-css';
 import { Button, Icon, ProgressBar, TextInput } from 'react-materialize';
 import { connect } from 'react-redux'
-import { fetchHuaolelo, editWordGroup, deleteWordGroup } from '../../actions'
+import { editWordGroup, deleteWordGroup } from '../../actions'
 
 class WordGroupCard extends Component {
     constructor(props) {
@@ -19,9 +19,6 @@ class WordGroupCard extends Component {
             isTargeting: '',
             errorMessage: ''
         }
-    }
-    componentDidMount(){
-        this.props.fetchHuaolelo()
     }
     handleInputChange(evt) {
         let value = evt.target.value;
@@ -62,6 +59,19 @@ class WordGroupCard extends Component {
     }
     handleButtonThing(object) {
         this.setState({ isShowingEditForm: true, isTargeting: object.title })
+    }
+    renderHuaoleloForWordGroup(){
+        return this.props.naHuaolelo.sort(function (firstHuaolelo, secondHuaolelo) {
+            return firstHuaolelo.huaolelo.localeCompare(secondHuaolelo.huaolelo)
+        }).map(theHuaolelo => {
+            const { huaolelo, unuhi } = theHuaolelo
+            return (
+              <div className="card darken-1" key={theHuaolelo._id}>
+                  <p>{huaolelo}</p>
+                  <p>{unuhi}</p>
+              </div>
+            )
+          })
     }
     render() {
         const { title, unuhi } = this.props
@@ -148,6 +158,10 @@ class WordGroupCard extends Component {
                         </div>
                     }
                 </div>
+                
+                <div>
+                    {this.renderHuaoleloForWordGroup()}
+                </div>
             </div>
 
         )
@@ -158,4 +172,4 @@ function mapStateToProps({ naHuaolelo, wordGroups }) {
     return { naHuaolelo, wordGroups }
 }
 
-export default connect(mapStateToProps, { fetchHuaolelo, editWordGroup, deleteWordGroup })(WordGroupCard)
+export default connect(mapStateToProps, { editWordGroup, deleteWordGroup })(WordGroupCard)
