@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import 'materialize-css';
 import { Button, Icon, ProgressBar, TextInput } from 'react-materialize';
 import { connect } from 'react-redux'
-import { fetchWordGroups, editWordGroup, deleteWordGroup } from '../../actions'
+import { fetchWordGroups, editWordGroup, deleteWordGroup, fetchHuaolelo } from '../../actions'
 
 import NewWordGroupCard from './NewWordGroupCard'
 import NewHuaoleloCard from './NewHuaoleloCard'
@@ -25,6 +25,7 @@ class WordGroupsList extends Component {
   }
   componentDidMount() {
     this.props.fetchWordGroups()
+    this.props.fetchHuaolelo()
   }
   // async handleButtonThing(object){
   //   console.log('title , ', object.title)
@@ -180,8 +181,8 @@ class WordGroupsList extends Component {
   }
 }
 
-function mapStateToProps({ wordGroups }) {
-  return { wordGroups }
+function mapStateToProps({ wordGroups, naHuaolelo }) {
+  return { wordGroups, naHuaolelo }
 }
 
-export default connect(mapStateToProps, { fetchWordGroups, editWordGroup, deleteWordGroup })(WordGroupsList)
+export default connect(mapStateToProps, { fetchWordGroups, editWordGroup, deleteWordGroup, fetchHuaolelo })(WordGroupsList)
