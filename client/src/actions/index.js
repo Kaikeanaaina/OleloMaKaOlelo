@@ -14,7 +14,7 @@ export const fetchHuaolelo = () => async dispatch => {
 export const submitHuaolelo = (values, history) => async dispatch => {
   const res = await axios.post('/api/huaolelo', values)
   //history.push('/huaolelo')
-  dispatch({ type: FETCH_USER, payload: res.data})
+  dispatch({ type: FETCH_HUAOLELO, payload: res.data})
 }
 
 export const fetchWordGroups = () => async dispatch => {
