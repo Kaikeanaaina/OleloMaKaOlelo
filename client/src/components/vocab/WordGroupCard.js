@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import 'materialize-css';
 import { Button, Icon, ProgressBar, TextInput } from 'react-materialize';
 import { connect } from 'react-redux'
-import { fetchHuaolelo } from '../../actions'
+import { fetchHuaolelo, editWordGroup, deleteWordGroup } from '../../actions'
 
 class WordGroupCard extends Component {
     constructor(props) {
@@ -19,6 +19,9 @@ class WordGroupCard extends Component {
             isTargeting: '',
             errorMessage: ''
         }
+    }
+    componentDidMount(){
+        this.props.fetchHuaolelo()
     }
     handleInputChange(evt) {
         let value = evt.target.value;
@@ -46,9 +49,6 @@ class WordGroupCard extends Component {
         switch (action) {
             case ('delete'):
                 this.props.deleteWordGroup(title)
-                    .then(() => {
-                        this.setState({ isLoading: false, isShowingConfirmDeleteButton: false })
-                    })
                 return null
             case ('edit'):
                 this.props.editWordGroup(title)
@@ -154,8 +154,8 @@ class WordGroupCard extends Component {
     }
 }
 
-function mapStateToProps({ naHuaolelo }) {
-    return { naHuaolelo }
+function mapStateToProps({ naHuaolelo, wordGroups }) {
+    return { naHuaolelo, wordGroups }
 }
 
-export default connect(mapStateToProps, { fetchHuaolelo })(WordGroupCard)
+export default connect(mapStateToProps, { fetchHuaolelo, editWordGroup, deleteWordGroup })(WordGroupCard)
