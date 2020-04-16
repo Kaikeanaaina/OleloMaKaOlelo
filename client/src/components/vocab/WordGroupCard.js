@@ -9,7 +9,7 @@ class WordGroupCard extends Component {
     constructor(props) {
         super(props)
 
-        this.handleInputChange = this.handleInputChange.bind(this)
+        this.handleChange = this.handleChange.bind(this)
         this.state = {
             isLoading: false,
             isShowingConfirmDeleteButton: false,
@@ -21,22 +21,42 @@ class WordGroupCard extends Component {
             errorMessage: ''
         }
     }
-    handleInputChange(evt) {
+    componentDidMount(){
+        this.setState({editWordGroup: this.props.title, editWordGroupUnuhi: this.props.unuhi})
+    }
+    handleChange(evt) {
         let value = evt.target.value;
         switch (evt.target.className) {
-            case `editWordGroup`:
+            case 'editWordGroup':
                 const title = (element) => element.title.toLowerCase() === evt.target.value.toLowerCase()
                 const newGroupArray = this.props.wordGroups.some(title)
 
                 this.setState({ ...this.state, [evt.target.name]: value, errorMessage: '' });
 
+                let newGroupArray2     
+                const newArrayToCheckForOkina = evt.target.value.split('')
+
+                if(newArrayToCheckForOkina[newArrayToCheckForOkina.length-1]=== "'"){
+                    newArrayToCheckForOkina.pop()
+                    newArrayToCheckForOkina.push("ʻ")
+                    const joiningThing = newArrayToCheckForOkina.join('')
+                    const anotherTitle = (element) => element.title.toLowerCase() === joiningThing.toLowerCase()
+                    newGroupArray2 = this.props.wordGroups.some(anotherTitle)
+
+                    if(newGroupArray2){
+                        return this.setState({ errorMessage: 'Word Group title already exists'})
+                    }
+
+                    return this.setState({ ...this.state, [evt.target.name]: joiningThing, errorMessage: '' });
+                }
+                
                 if (newGroupArray) {
                     return this.setState({ errorMessage: 'Word Group title already exists' })
                 }
 
                 return
-            case `editWordGroupUnuhi`:
-                return this.setState({ ...this.state, [evt.target.name]: value });
+            case 'editWordGroupUnuhi':
+                return this.setState({ ...this.state, [evt.target.name]: value});
             default:
                 return false
         }
@@ -99,8 +119,8 @@ class WordGroupCard extends Component {
                         />
                         :
                         <div>
-                            <TextInput id={`editWordGroup${title}`} className={`editWordGroup`} label="editWordGroup" name="editWordGroup" placeholder={title} value={this.state.editWordGroup} onChange={this.handleInputChange} />
-                            <TextInput id={`editWordGroupUnuhi${title}`} className={`editWordGroupUnuhi`} label="editWordGroupUnuhi" name="editWordGroupUnuhi" placeholder={unuhi} value={this.state.editWordGroupUnuhi} onChange={this.handleInputChange} />
+                            <TextInput id={`editWordGroup${title}`} className={`editWordGroup`} label="editWordGroup" name="editWordGroup" value={this.state.editWordGroup} onChange={this.handleChange} />
+                            <TextInput id={`editWordGroupUnuhi${title}`} className={`editWordGroupUnuhi`} label="editWordGroupUnuhi" name="editWordGroupUnuhi" value={this.state.editWordGroupUnuhi} onChange={this.handleChange} />
                             <p style={{ color: 'red' }}>{this.state.errorMessage}</p>
                             {!this.state.errorMessage && this.state.editWordGroup && this.state.editWordGroupUnuhi
                                 ?

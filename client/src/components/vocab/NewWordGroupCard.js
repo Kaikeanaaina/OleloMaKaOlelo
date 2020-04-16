@@ -40,6 +40,9 @@ export class NewWordGroupCard extends Component {
                     if(newGroupArray2){
                         return this.setState({ errorMessage: 'Word Group title already exists'})
                     }
+
+
+                    return this.setState({ ...this.state, [evt.target.name]: joiningThing, errorMessage: '' });
                 }
                 
                 if (newGroupArray) {
