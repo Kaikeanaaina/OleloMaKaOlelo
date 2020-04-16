@@ -17,13 +17,8 @@ class WordGroupCard extends Component {
             editWordGroup: '',
             editWordGroupUnuhi: '',
             isTargeting: '',
-            errorMessage: '',
-            huaoleloArray: []
+            errorMessage: ''
         }
-    }
-    componentDidMount(){
-        console.log('1111111111111111', this.props.title)
-        //const result = naHuaolelo.filter(huaolelo => huaolelo.wordGroups.some(x=>x===req.params.id)===true)
     }
     handleInputChange(evt) {
         let value = evt.target.value;
@@ -72,7 +67,7 @@ class WordGroupCard extends Component {
             const { huaolelo, unuhi, wordGroups } = theHuaolelo
             return (
               <div className="card darken-1" key={theHuaolelo._id}>
-                  <p>{huaolelo}</p>
+                  <h5>{huaolelo}</h5>
                   <p>{unuhi}</p>
                   <p>{wordGroups}</p>
               </div>
@@ -84,7 +79,11 @@ class WordGroupCard extends Component {
         return (
 
             <div className="card-content">
-                <span className="card-title"> {title}</span>
+                <span className="card-title"> 
+                    <h4>
+                    {title}
+                    </h4>
+                </span>
                 <span> {unuhi}</span>
                 {this.state.isLoading ? <ProgressBar /> : null}
                 <div>
