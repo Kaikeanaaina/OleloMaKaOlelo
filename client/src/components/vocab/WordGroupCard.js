@@ -3,6 +3,7 @@ import 'materialize-css';
 import { Button, Icon, ProgressBar, TextInput } from 'react-materialize';
 import { connect } from 'react-redux'
 import { editWordGroup, deleteWordGroup } from '../../actions'
+import HuaoleloCard from './HuaoleloCard'
 
 class WordGroupCard extends Component {
     constructor(props) {
@@ -67,9 +68,7 @@ class WordGroupCard extends Component {
             const { huaolelo, unuhi, wordGroups } = theHuaolelo
             return (
               <div className="card darken-1" key={theHuaolelo._id}>
-                  <h5>{huaolelo}</h5>
-                  <p>{unuhi}</p>
-                  <p>{wordGroups}</p>
+                  <HuaoleloCard huaolelo={huaolelo} unuhi={unuhi} wordGroups={wordGroups} />
               </div>
             )
           })
