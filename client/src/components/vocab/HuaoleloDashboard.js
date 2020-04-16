@@ -7,7 +7,7 @@ export class VocabDashboard extends Component {
     render() {
         return (
             <div>
-                <h1>huaolelo dashboard</h1>
+                <h5>Huaolelo Dashboard</h5>
                 <NewHuaoleloCard />
                 <NewWordGroupCard />
                 <WordGroupsList />
