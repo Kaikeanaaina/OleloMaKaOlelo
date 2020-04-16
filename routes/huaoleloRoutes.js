@@ -178,72 +178,73 @@ module.exports = app => {
     })
 
     app.put('/api/wordGroup', requireLogin, async (req, res) => {
+        console.log('11111111111PUT', req.body)
 
-        if (!req.body) {
-            return res.send({ error: 'there is no body in the request' })
-        }
+        // if (!req.body) {
+        //     return res.send({ error: 'there is no body in the request' })
+        // }
 
-        const { editWordGroup, editWordGroupUnuhi, title } = req.body
+        // const { editWordGroup, editWordGroupUnuhi, _id } = req.body
 
-        const arrayString = editWordGroup.split('')
-        const firstLetterWillCapital = arrayString[0].toUpperCase()
-        arrayString.splice(0, 1, firstLetterWillCapital)
+        // const arrayString = editWordGroup.split('')
+        // const firstLetterWillCapital = arrayString[0].toUpperCase()
+        // arrayString.splice(0, 1, firstLetterWillCapital)
 
-        var readyToCapitalize = false
-        var theIndex = 0
+        // var readyToCapitalize = false
+        // var theIndex = 0
 
-        arrayString.forEach((element) => {
-            if (element === ' ') {
-                theIndex++
-                return readyToCapitalize = true
-            }
-            if (readyToCapitalize) {
-                arrayString.splice(theIndex, 1, element.toUpperCase())
-                readyToCapitalize = false
-                theIndex++
-                return
-            }
-            theIndex++
-            return
-        })
+        // arrayString.forEach((element) => {
+        //     if (element === ' ') {
+        //         theIndex++
+        //         return readyToCapitalize = true
+        //     }
+        //     if (readyToCapitalize) {
+        //         arrayString.splice(theIndex, 1, element.toUpperCase())
+        //         readyToCapitalize = false
+        //         theIndex++
+        //         return
+        //     }
+        //     theIndex++
+        //     return
+        // })
 
-        var theIndexOkina = 0
-        arrayString.forEach((element) => {
-            if (element === "'"){
-                arrayString.splice(theIndexOkina, 1, "ʻ")
-                theIndexOkina++
-                return
-            }
-            theIndexOkina++
-            return 
-        })
+        // var theIndexOkina = 0
+        // arrayString.forEach((element) => {
+        //     if (element === "'"){
+        //         arrayString.splice(theIndexOkina, 1, "ʻ")
+        //         theIndexOkina++
+        //         return
+        //     }
+        //     theIndexOkina++
+        //     return 
+        // })
 
-        const joiningAllTheStringLetters = arrayString.join('')
+        // const joiningAllTheStringLetters = arrayString.join('')
 
-        const wordGroupToEdit = await WordGroup.find({ title })
+        // const wordGroupToEdit = await WordGroup.find({ _id })
 
-        if (!wordGroupToEdit.length) {
-            return res.send({ error: 'title does not exists' })
-        }
+        // if (!wordGroupToEdit.length) {
+        //     return res.send({ error: 'title does not exists' })
+        // }
 
-        try {
-            await WordGroup.updateMany({ title }, { $set: { title: joiningAllTheStringLetters, unuhi: editWordGroupUnuhi } })
+        // try {
+        //     await WordGroup.updateMany({ _id }, { $set: { title: joiningAllTheStringLetters, unuhi: editWordGroupUnuhi } })
 
-            const wordgroups = await WordGroup.find({}).select({})
-            return res.send(wordgroups)
-        } catch (err) {
-            res.status(422).send(err)
-        }
+        //     const wordgroups = await WordGroup.find({}).select({})
+        //     return res.send(wordgroups)
+        // } catch (err) {
+        //     res.status(422).send(err)
+        // }
     })
 
     app.delete('/api/wordGroup/:id', requireLogin, async (req, res) => {
-
-        try {
-            await WordGroup.deleteOne({ title: req.params.id })
-            const wordgroups = await WordGroup.find({}).select({})
-            return res.send(wordgroups)
-        } catch (err) {
-            res.status(422).send(err)
-        }
+        console.log('2222222222DELETE', req.params.id)
+        // try {
+        //     await WordGroup.deleteOne({ title: req.params.id })
+        //     const wordgroups = await WordGroup.find({}).select({})
+        //     return res.send(wordgroups)
+        // } catch (err) {
+        //     res.status(422).send(err)
+        // }
     })
 }
