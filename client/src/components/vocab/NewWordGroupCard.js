@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import 'materialize-css';
 import { TextInput, Button, Icon, ProgressBar } from 'react-materialize';
 import { connect } from 'react-redux'
-import { submitWordGroup, fetchWordGroups } from '../../actions'
+import { submitWordGroup } from '../../actions'
 
 export class NewWordGroupCard extends Component {
     constructor(props) {
@@ -18,9 +18,6 @@ export class NewWordGroupCard extends Component {
             isLoading: false
         }
     }
-    componentDidMount() {
-        this.props.fetchWordGroups()
-    }
     handleChange(evt) {
         let value = evt.target.value;
         switch (evt.target.id) {
@@ -30,6 +27,21 @@ export class NewWordGroupCard extends Component {
 
                 this.setState({ ...this.state, [evt.target.name]: value, errorMessage: '' });
 
+                let newGroupArray2     
+                const newArrayToCheckForOkina = evt.target.value.split('')
+
+                if(newArrayToCheckForOkina[newArrayToCheckForOkina.length-1]=== "'"){
+                    newArrayToCheckForOkina.pop()
+                    newArrayToCheckForOkina.push("ʻ")
+                    const joiningThing = newArrayToCheckForOkina.join('')
+                    const anotherTitle = (element) => element.title.toLowerCase() === joiningThing.toLowerCase()
+                    newGroupArray2 = this.props.wordGroups.some(anotherTitle)
+
+                    if(newGroupArray2){
+                        return this.setState({ errorMessage: 'Word Group title already exists'})
+                    }
+                }
+                
                 if (newGroupArray) {
                     return this.setState({ errorMessage: 'Word Group title already exists' })
                 }
@@ -112,4 +124,4 @@ function mapStateToProps({ wordGroups }) {
     return { wordGroups }
 }
 
-export default connect(mapStateToProps, { submitWordGroup, fetchWordGroups })(NewWordGroupCard)
+export default connect(mapStateToProps, { submitWordGroup })(NewWordGroupCard)
