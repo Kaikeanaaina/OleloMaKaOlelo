@@ -33,6 +33,6 @@ export const editWordGroup = (values, history) => async dispatch => {
 }
 
 export const deleteWordGroup = (values, history) => async dispatch => {
-  const res = await axios.delete(`/api/wordGroup/${values.title}`, values)
+  const res = await axios.delete(`/api/wordGroup/${values._id}`, values)
   dispatch({ type: FETCH_WORD_GROUPS, payload: res.data})
 }
