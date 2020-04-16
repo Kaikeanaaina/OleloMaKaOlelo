@@ -55,8 +55,8 @@ export class NewWordGroupCard extends Component {
         switch (this.state.isShowingInput) {
             case false:
                 return (
-                    <div className="card-content">
-                        <Button onClick={() => this.setState({ isShowingInput: !this.state.isShowingInput })}>
+                    <div>
+                        <Button small onClick={() => this.setState({ isShowingInput: !this.state.isShowingInput })}>
                             New word group card
                         </Button>
                     </div>
