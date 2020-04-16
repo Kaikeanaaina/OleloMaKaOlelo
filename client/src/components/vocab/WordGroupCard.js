@@ -17,8 +17,13 @@ class WordGroupCard extends Component {
             editWordGroup: '',
             editWordGroupUnuhi: '',
             isTargeting: '',
-            errorMessage: ''
+            errorMessage: '',
+            huaoleloArray: []
         }
+    }
+    componentDidMount(){
+        console.log('1111111111111111', this.props.title)
+        //const result = naHuaolelo.filter(huaolelo => huaolelo.wordGroups.some(x=>x===req.params.id)===true)
     }
     handleInputChange(evt) {
         let value = evt.target.value;
@@ -61,14 +66,15 @@ class WordGroupCard extends Component {
         this.setState({ isShowingEditForm: true, isTargeting: object.title })
     }
     renderHuaoleloForWordGroup(){
-        return this.props.naHuaolelo.sort(function (firstHuaolelo, secondHuaolelo) {
+        return this.props.naHuaolelo.filter(huaolelo => huaolelo.wordGroups.some(x=>x===this.props.title)===true).sort(function (firstHuaolelo, secondHuaolelo) {
             return firstHuaolelo.huaolelo.localeCompare(secondHuaolelo.huaolelo)
         }).map(theHuaolelo => {
-            const { huaolelo, unuhi } = theHuaolelo
+            const { huaolelo, unuhi, wordGroups } = theHuaolelo
             return (
               <div className="card darken-1" key={theHuaolelo._id}>
                   <p>{huaolelo}</p>
                   <p>{unuhi}</p>
+                  <p>{wordGroups}</p>
               </div>
             )
           })
