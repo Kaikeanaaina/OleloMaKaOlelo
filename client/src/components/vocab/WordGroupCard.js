@@ -18,58 +18,56 @@ class WordGroupCard extends Component {
             editWordGroup: '',
             editWordGroupUnuhi: '',
             isTargeting: '',
-            errorMessage: ''
+            errorMessage: '',
+            noteMessage: '',
+            currentWordGroup: ''
         }
     }
-    componentDidMount(){
-        this.setState({editWordGroup: this.props.title, editWordGroupUnuhi: this.props.unuhi})
+    componentDidMount() {
+        this.setState({ editWordGroupUnuhi: this.props.unuhi, currentWordGroup: this.props.title })
     }
     handleChange(evt) {
         let value = evt.target.value;
         switch (evt.target.className) {
             case 'editWordGroup':
-                const title = (element) => element.title.toLowerCase() === evt.target.value.toLowerCase()
-                const newGroupArray = this.props.wordGroups.some(title)
-
-                this.setState({ ...this.state, [evt.target.name]: value, errorMessage: '' });
-
-                let newGroupArray2     
+                let joiningThing;
                 const newArrayToCheckForOkina = evt.target.value.split('')
-
-                if(newArrayToCheckForOkina[newArrayToCheckForOkina.length-1]=== "'"){
+                if (newArrayToCheckForOkina[newArrayToCheckForOkina.length - 1] === "'") {
                     newArrayToCheckForOkina.pop()
                     newArrayToCheckForOkina.push("ʻ")
-                    const joiningThing = newArrayToCheckForOkina.join('')
-                    const anotherTitle = (element) => element.title.toLowerCase() === joiningThing.toLowerCase()
-                    newGroupArray2 = this.props.wordGroups.some(anotherTitle)
-
-                    if(newGroupArray2){
-                        return this.setState({ errorMessage: 'Word Group title already exists'})
-                    }
-
-                    return this.setState({ ...this.state, [evt.target.name]: joiningThing, errorMessage: '' });
+                    joiningThing = newArrayToCheckForOkina.join('')
+                } else {
+                    joiningThing = evt.target.value
                 }
-                
-                if (newGroupArray) {
+                this.setState({ ...this.state, [evt.target.name]: joiningThing, errorMessage: '', noteMessage: '' });
+
+                const anotherTitle = (element) => element.title.toLowerCase() === joiningThing.toLowerCase()
+                var newGroupArray = this.props.wordGroups.some(anotherTitle)
+
+                if (newGroupArray && this.state.currentWordGroup.toLowerCase() !== value.toLowerCase()) {
                     return this.setState({ errorMessage: 'Word Group title already exists' })
+                }
+
+                if(this.state.currentWordGroup.toLowerCase() === value.toLowerCase()){
+                    this.setState({noteMessage: 'Current Title is the same'})
                 }
 
                 return
             case 'editWordGroupUnuhi':
-                return this.setState({ ...this.state, [evt.target.name]: value});
+                return this.setState({ ...this.state, [evt.target.name]: value });
             default:
                 return false
         }
     }
-    handleButton(title, action) {
+    handleButton(object, action) {
         this.setState({ isLoading: !this.state.isLoading })
 
         switch (action) {
             case ('delete'):
-                this.props.deleteWordGroup(title)
+                this.props.deleteWordGroup(object)
                 return null
             case ('edit'):
-                this.props.editWordGroup(title)
+                this.props.editWordGroup(object)
                     .then(() => {
                         this.setState({ isLoading: false, isShowingEditForm: false, isShowingConfirmEditButton: false, editWordGroup: '', editWordGroupUnuhi: '' })
                     })
@@ -81,26 +79,26 @@ class WordGroupCard extends Component {
     handleButtonThing(object) {
         this.setState({ isShowingEditForm: true, isTargeting: object.title })
     }
-    renderHuaoleloForWordGroup(){
-        return this.props.naHuaolelo.filter(huaolelo => huaolelo.wordGroups.some(x=>x===this.props.title)===true).sort(function (firstHuaolelo, secondHuaolelo) {
+    renderHuaoleloForWordGroup() {
+        return this.props.naHuaolelo.filter(huaolelo => huaolelo.wordGroups.some(x => x === this.props.title) === true).sort(function (firstHuaolelo, secondHuaolelo) {
             return firstHuaolelo.huaolelo.localeCompare(secondHuaolelo.huaolelo)
         }).map(theHuaolelo => {
             const { huaolelo, unuhi, wordGroups } = theHuaolelo
             return (
-              <div className="card darken-1" key={theHuaolelo._id}>
-                  <HuaoleloCard huaolelo={huaolelo} unuhi={unuhi} wordGroups={wordGroups} />
-              </div>
+                <div className="card darken-1" key={theHuaolelo._id}>
+                    <HuaoleloCard huaolelo={huaolelo} unuhi={unuhi} wordGroups={wordGroups} />
+                </div>
             )
-          })
+        })
     }
     render() {
-        const { title, unuhi } = this.props
+        const { _id, title, unuhi } = this.props
         return (
 
             <div className="card-content">
-                <span className="card-title"> 
+                <span className="card-title">
                     <h4>
-                    {title}
+                        {title}
                     </h4>
                 </span>
                 <span> {unuhi}</span>
@@ -119,9 +117,10 @@ class WordGroupCard extends Component {
                         />
                         :
                         <div>
-                            <TextInput id={`editWordGroup${title}`} className={`editWordGroup`} label="editWordGroup" name="editWordGroup" value={this.state.editWordGroup} onChange={this.handleChange} />
+                            <TextInput id={`editWordGroup${title}`} className={`editWordGroup`} label="editWordGroup" name="editWordGroup" placeholder={title} value={this.state.editWordGroup} onChange={this.handleChange} />
                             <TextInput id={`editWordGroupUnuhi${title}`} className={`editWordGroupUnuhi`} label="editWordGroupUnuhi" name="editWordGroupUnuhi" value={this.state.editWordGroupUnuhi} onChange={this.handleChange} />
                             <p style={{ color: 'red' }}>{this.state.errorMessage}</p>
+                            <p style={{ color: 'green' }}>{this.state.noteMessage}</p>
                             {!this.state.errorMessage && this.state.editWordGroup && this.state.editWordGroupUnuhi
                                 ?
                                 <Button
@@ -129,7 +128,7 @@ class WordGroupCard extends Component {
                                     small
                                     node="button"
                                     waves="light"
-                                    onClick={this.handleButton.bind(this, { editWordGroup: this.state.editWordGroup, editWordGroupUnuhi: this.state.editWordGroupUnuhi, title }, 'edit')}
+                                    onClick={this.handleButton.bind(this, { editWordGroup: this.state.editWordGroup, editWordGroupUnuhi: this.state.editWordGroupUnuhi, _id }, 'edit')}
                                 >
                                     Confirm Edit {title}
                                 </Button>
@@ -166,7 +165,7 @@ class WordGroupCard extends Component {
                                 small
                                 node="button"
                                 waves="light"
-                                onClick={this.handleButton.bind(this, { title }, 'delete')}
+                                onClick={this.handleButton.bind(this, { _id }, 'delete')}
                             >
                                 Confirm Delete {title}
                             </Button>
@@ -182,7 +181,7 @@ class WordGroupCard extends Component {
                         </div>
                     }
                 </div>
-                
+
                 <div>
                     {this.renderHuaoleloForWordGroup()}
                 </div>
