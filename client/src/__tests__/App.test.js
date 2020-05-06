@@ -36,27 +36,58 @@
 //     it ('rendered the Landing text', () => {
 //       //console.log(landing.debug())
 //       expect(landing.find('h1').text()).toEqual('Landing')
-        
+
 //     })
 // })
 
 
-
-
-
 //////////////////////////////////////////////
 
-// import React from 'react'
-// import { shallow } from 'enzyme'
-// import App from '../App'
-// import Header from '../components/Header'
+import React from 'react'
+import { mount, shallow } from 'enzyme'
+import App from '../App'
+import Root from '../Root'
+import Header from '../components/Header'
+import Login from '../components/Login'
 
-// let wrapped;
+let wrapped;
+let wrapper;
 
-// beforeEach(() => {
-//   wrapped = shallow(<App />)
-// })
+beforeEach(() => {
+    wrapped = mount(
+        <Root>
+            <App />
+        </Root>
+    )
 
-// it('shows app exists', () => {
-//   expect(wrapped.find(Header).length).toEqual(1)
-// })
+    wrapper = shallow(
+        <Root>
+            <App />
+        </Root>
+    )
+    
+})
+
+//console.logs have to be within a it statement, or withing beforeEach/afterEach statements
+
+afterEach(() => {
+    wrapped.unmount();
+});
+
+//it('will confirm the fetchUser')
+
+//it 'should bring a log a user in
+
+describe('<App />', () => {
+    it('shows a header', () => {
+        expect(wrapped.find(Header).length).toEqual(1)
+    })
+
+    //it 'should render Login Component
+
+    //it 'should render Logout Component
+
+    //it 'should render Landing, Dashboard, HuaoleloDashboard
+
+    //it 'should render Page404
+})
