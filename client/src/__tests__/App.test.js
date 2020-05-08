@@ -79,7 +79,11 @@ afterEach(() => {
 //it 'should bring a log a user in
 
 describe('<App />', () => {
-    it('shows a header', () => {
+    it('should have app component', () => {
+        expect(wrapper.find(App).length).toEqual(1)
+    })
+    
+    it('should have a header component', () => {
         expect(wrapped.find(Header).length).toEqual(1)
     })
 
