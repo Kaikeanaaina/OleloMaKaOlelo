@@ -87,6 +87,15 @@ describe('<App />', () => {
         expect(wrapped.find(Header).length).toEqual(1)
     })
 
+    describe('this.props.auth', () => {
+        it('should render Login component', () => {
+            expect().toEqual()
+
+        })
+        
+    })
+    
+
     //it 'should render Login Component
 
     //it 'should render Logout Component
