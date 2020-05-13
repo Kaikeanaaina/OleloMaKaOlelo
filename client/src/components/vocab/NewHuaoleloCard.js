@@ -70,7 +70,7 @@ class NewHuaoleloCard extends Component {
                     key={wordgroup.title}
                     offLabel="Off"
                     onLabel={wordgroup.title}
-                    value={wordgroup.title}
+                    value={wordgroup._id}
                     onChange={this.handleSwitch}
                 />
             )
@@ -92,6 +92,7 @@ class NewHuaoleloCard extends Component {
 
     }
     handleSwitch(event) {
+        console.log(this.state)
         switch (event.target.checked) {
             case false:
                 const finding = this.state.wordGroup.indexOf(event.target.value)
