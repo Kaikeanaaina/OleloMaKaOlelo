@@ -1,3 +1,6 @@
+// this is an *Action Creator* is the dispatch
+// *Action* is the type and payload
+
 import axios from 'axios'
 import { FETCH_USER, FETCH_HUAOLELO, FETCH_WORD_GROUPS} from './types'
 
