@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import 'materialize-css';
+import { Link } from 'react-router-dom'
 import { Button, Icon, ProgressBar, TextInput } from 'react-materialize';
 import { connect } from 'react-redux'
+import { compose } from 'redux'
 import { editWordGroup, deleteWordGroup } from '../../actions'
 import HuaoleloCard from './HuaoleloCard'
 
@@ -48,8 +50,8 @@ class WordGroupCard extends Component {
                     return this.setState({ errorMessage: 'Word Group title already exists' })
                 }
 
-                if(this.state.currentWordGroup.toLowerCase() === value.toLowerCase()){
-                    this.setState({noteMessage: 'Current Title is the same'})
+                if (this.state.currentWordGroup.toLowerCase() === value.toLowerCase()) {
+                    this.setState({ noteMessage: 'Current Title is the same' })
                 }
 
                 return
@@ -86,7 +88,9 @@ class WordGroupCard extends Component {
             const { huaolelo, unuhi, wordGroups } = theHuaolelo
             return (
                 <div className="card darken-1" key={theHuaolelo._id}>
-                    <HuaoleloCard huaolelo={huaolelo} unuhi={unuhi} wordGroups={wordGroups} />
+                    <Link to={`/huaolelo/${theHuaolelo._id}`} >
+                        <HuaoleloCard huaolelo={huaolelo} unuhi={unuhi} wordGroups={wordGroups} />
+                    </Link>
                 </div>
             )
         })
@@ -195,4 +199,4 @@ function mapStateToProps({ naHuaolelo, wordGroups }) {
     return { naHuaolelo, wordGroups }
 }
 
-export default connect(mapStateToProps, { editWordGroup, deleteWordGroup })(WordGroupCard)
+export default compose(connect(mapStateToProps, { editWordGroup, deleteWordGroup }))(WordGroupCard)
