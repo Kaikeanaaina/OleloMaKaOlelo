@@ -1,47 +1,31 @@
-import React from 'react'
-import { mount, shallow } from 'enzyme'
-import sinon from 'sinon'
-import configureStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
-import WordGroupCard from '../WordGroupCard'
-import Root from '../../../Root'
-import * as types from '../../../actions/types'
-import * as actions from '../../../actions/index'
-
-const middlewares = [thunk]
-const mockStore = configureStore(middlewares)
-
-let wrappedMount;
-let wrapper;
-
+import React from 'react';
+import { Provider } from 'react-redux';
+import renderer from 'react-test-renderer';
+import configureStore from 'redux-mock-store';
+import { fetchHuaolelo } from '../../../actions'
+ 
+import WordGroupCard from '../WordGroupCard';
+import createMockStore from 'redux-mock-store';
+ 
+let store;
+let component;
+ 
 beforeEach(() => {
-    wrappedMount = mount(
-        <Root>
-            <WordGroupCard />
-        </Root>
-    )
-    wrapper = shallow(
-        <Root>
-            <WordGroupCard />)
-        </Root>
-    )
-})
 
-afterEach(() => {
-    wrappedMount.unmount()
-})
+});
 
+describe('My Connected React-Redux Component', () => {
+ 
+  it('renders', () => {
+    const store = createMockStore()
+    store.dispatch(fetchHuaolelo())
 
-describe('<WordGroupCard />', () => {
-    it('should exist', () => {
+    const root = mount(<WordGroupCard unuhi='test sample' store={store} />)
 
-        expect(wrappedMount.find(WordGroupCard).length).toEqual(1)
-    })
+    expect(root.find('span')[1]).toEqual('test sample')
+  });
+ 
+  it('should dispatch an action on button click', () => {
 
-    it('should call componentDidMount', () => {
-        console.log(wrappedMount.debug())
-    })
-
-
-
-})
+  });
+});

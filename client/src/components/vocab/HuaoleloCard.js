@@ -45,7 +45,7 @@ class HuaoleloCard extends Component {
             <div>
                 <h5>{huaolelo}</h5>
                 <p>{unuhi}</p>
-                {this.renderWordGroups()}
+                {/* {this.renderWordGroups()} */}
             </div>
         )
     }
