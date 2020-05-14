@@ -40,7 +40,7 @@ class HuaoleloCard extends Component {
         }
     }
     render() {
-        const { huaolelo, unuhi } = this.props
+        const { huaolelo, unuhi } = this.props.theHuaolelo
         return (
             <div>
                 <h5>{huaolelo}</h5>

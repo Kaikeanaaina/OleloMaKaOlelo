@@ -85,11 +85,10 @@ class WordGroupCard extends Component {
         return this.props.naHuaolelo.filter(huaolelo => huaolelo.wordGroups.some(x => x === this.props.title) === true).sort(function (firstHuaolelo, secondHuaolelo) {
             return firstHuaolelo.huaolelo.localeCompare(secondHuaolelo.huaolelo)
         }).map(theHuaolelo => {
-            const { huaolelo, unuhi, wordGroups } = theHuaolelo
             return (
                 <div className="card darken-1" key={theHuaolelo._id}>
                     <Link to={`/huaolelo/${theHuaolelo._id}`} >
-                        <HuaoleloCard huaolelo={huaolelo} unuhi={unuhi} wordGroups={wordGroups} />
+                        <HuaoleloCard theHuaolelo={theHuaolelo} />
                     </Link>
                 </div>
             )
