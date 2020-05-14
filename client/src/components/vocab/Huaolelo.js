@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 
 export class Huaolelo extends Component {
+    
     render() {
         return (
             <div>
