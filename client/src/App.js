@@ -11,6 +11,7 @@ import Login from './components/Login'
 import Logout from './components/Logout'
 import Page404 from './components/Page404'
 import HuaoleloDashboard from './components/vocab/HuaoleloDashboard'
+import Huaolelo from './components/vocab/Huaolelo'
 
 
 class App extends Component {
@@ -41,6 +42,7 @@ class App extends Component {
                   <Route exact path="/" component={Landing} />
                   <Route exact path="/home" component={Dashboard} />
                   <Route exact path="/huaolelo" component={HuaoleloDashboard} />
+                  <Route path="/huaolelo/:id" component={Huaolelo} />
                   <Route component={Page404} />
                 </Switch>
               </div>
