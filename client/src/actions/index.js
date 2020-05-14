@@ -2,7 +2,7 @@
 // *Action* is the type and payload
 
 import axios from 'axios'
-import { FETCH_USER, FETCH_ALL_HUAOLELO, FETCH_WORD_GROUPS, HIGHLIGHT_A_HUAOLELO} from './types'
+import { FETCH_USER, FETCH_ALL_HUAOLELO, FETCH_WORD_GROUPS, HIGHLIGHT_A_HUAOLELO, FETCH_HIGHLIGHTED_HUAOLELO} from './types'
 
 export const fetchUser = () => async dispatch => {
   const res = await axios.get('/api/current_user')
@@ -33,6 +33,10 @@ export const deleteHuaolelo = (values, history) => async dispatch => {
 
 export const highlightAHuaolelo = (values, history) => async dispatch => {
   dispatch({ type: HIGHLIGHT_A_HUAOLELO, payload: values})
+}
+
+export const fetchHighlightedHuaolelo  = () => async dispatch => {
+  dispatch({type: FETCH_HIGHLIGHTED_HUAOLELO})
 }
 
 export const fetchWordGroups = () => async dispatch => {

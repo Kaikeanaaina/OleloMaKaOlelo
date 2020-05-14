@@ -3,8 +3,7 @@ import 'materialize-css';
 import { Link } from 'react-router-dom'
 import { Button, Icon, ProgressBar, TextInput } from 'react-materialize';
 import { connect } from 'react-redux'
-import { compose } from 'redux'
-import { editWordGroup, deleteWordGroup } from '../../actions'
+import { editWordGroup, deleteWordGroup, highlightAHuaolelo } from '../../actions'
 import HuaoleloCard from './HuaoleloCard'
 
 class WordGroupCard extends Component {
@@ -81,12 +80,16 @@ class WordGroupCard extends Component {
     handleButtonThing(object) {
         this.setState({ isShowingEditForm: true, isTargeting: object.title })
     }
+    handleHuaoleloCard(object) {
+        console.log(object)
+        this.props.highlightAHuaolelo(object)
+    }
     renderHuaoleloForWordGroup() {
         return this.props.naHuaolelo.filter(huaolelo => huaolelo.wordGroups.some(x => x === this.props.title) === true).sort(function (firstHuaolelo, secondHuaolelo) {
             return firstHuaolelo.huaolelo.localeCompare(secondHuaolelo.huaolelo)
         }).map(theHuaolelo => {
             return (
-                <div className="card darken-1" key={theHuaolelo._id}>
+                <div className="card darken-1" key={theHuaolelo._id} onClick={this.handleHuaoleloCard.bind(this, theHuaolelo)}>
                     <Link to={`/huaolelo/${theHuaolelo._id}`} >
                         <HuaoleloCard theHuaolelo={theHuaolelo} />
                     </Link>
@@ -198,4 +201,4 @@ function mapStateToProps({ naHuaolelo, wordGroups }) {
     return { naHuaolelo, wordGroups }
 }
 
-export default compose(connect(mapStateToProps, { editWordGroup, deleteWordGroup }))(WordGroupCard)
+export default connect(mapStateToProps, { editWordGroup, deleteWordGroup, highlightAHuaolelo })(WordGroupCard)

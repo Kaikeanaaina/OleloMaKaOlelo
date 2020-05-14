@@ -16,9 +16,7 @@ import Huaolelo from './components/vocab/Huaolelo'
 
 class App extends Component {
   componentDidMount() {
-    this.props.fetchUser().then(() => {
-      console.log(this.props)
-    })
+    this.props.fetchUser()
   }
   renderRoutes() {
     switch (this.props.auth){
