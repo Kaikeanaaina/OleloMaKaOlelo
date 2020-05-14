@@ -2,33 +2,33 @@
 // *Action* is the type and payload
 
 import axios from 'axios'
-import { FETCH_USER, FETCH_HUAOLELO, FETCH_WORD_GROUPS} from './types'
+import { FETCH_USER, FETCH_ALL_HUAOLELO, FETCH_WORD_GROUPS} from './types'
 
 export const fetchUser = () => async dispatch => {
   const res = await axios.get('/api/current_user')
   dispatch({ type: FETCH_USER, payload: res.data })
 }
 
-export const fetchHuaolelo = () => async dispatch => {
+export const fetchNaHuaolelo = () => async dispatch => {
   const res = await axios.get('/api/huaolelo')
-  dispatch({ type: FETCH_HUAOLELO, payload: res.data})
+  dispatch({ type: FETCH_ALL_HUAOLELO, payload: res.data})
 }
 
 export const submitHuaolelo = (values, history) => async dispatch => {
   const res = await axios.post('/api/huaolelo', values)
   //history.push('/huaolelo')
-  dispatch({ type: FETCH_HUAOLELO, payload: res.data})
+  dispatch({ type: FETCH_ALL_HUAOLELO, payload: res.data})
 }
 
 export const editHuaolelo = (values, history) => async dispatch => {
   const res = await axios.put('/api/huaolelo', values)
   //history.push('/huaolelo')
-  dispatch({FETCH_HUAOLELO, payload: res.data})
+  dispatch({ type: FETCH_ALL_HUAOLELO, payload: res.data})
 }
 
 export const deleteHuaolelo = (values, history) => async dispatch => {
   const res = await axios.delete(`/api/huaolelo/$(values._id)`, values)
-  dispatch({ type: FETCH_HUAOLELO, payload: res.data})
+  dispatch({ type: FETCH_ALL_HUAOLELO, payload: res.data})
 }
 
 export const fetchWordGroups = () => async dispatch => {

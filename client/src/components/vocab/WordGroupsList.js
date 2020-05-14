@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import 'materialize-css';
 import { connect } from 'react-redux'
-import { fetchWordGroups, fetchHuaolelo} from '../../actions'
+import { fetchWordGroups, fetchNaHuaolelo} from '../../actions'
 import WordGroupCard from './WordGroupCard'
 
 class WordGroupsList extends Component {
@@ -21,7 +21,7 @@ class WordGroupsList extends Component {
   }
   componentDidMount() {
     this.props.fetchWordGroups()
-    this.props.fetchHuaolelo()
+    this.props.fetchNaHuaolelo()
   }
   renderWordGroups() {
     return this.props.wordGroups.sort(function (firstWordGroup, secondWordGroup) {
@@ -48,4 +48,4 @@ function mapStateToProps({ wordGroups }) {
   return { wordGroups }
 }
 
-export default connect(mapStateToProps, { fetchWordGroups, fetchHuaolelo })(WordGroupsList)
+export default connect(mapStateToProps, { fetchWordGroups, fetchNaHuaolelo })(WordGroupsList)
