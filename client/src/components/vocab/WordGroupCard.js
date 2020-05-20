@@ -81,7 +81,6 @@ class WordGroupCard extends Component {
         this.setState({ isShowingEditForm: true, isTargeting: object.title })
     }
     handleHuaoleloCard(object) {
-        console.log(object)
         this.props.highlightAHuaolelo(object)
     }
     renderHuaoleloForWordGroup() {
@@ -149,7 +148,7 @@ class WordGroupCard extends Component {
                                 onClick={() => this.setState({ isShowingEditForm: false, editWordGroup: '', editWordGroupUnuhi: '', errorMessage: '' })}
                             >
                                 Cancel Edit
-                  </Button>
+                            </Button>
                         </div>
                     }
 
