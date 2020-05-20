@@ -13,6 +13,11 @@ module.exports = app => {
         res.send(naHuaolelo)
     })
 
+    app.get('/api/huaolelo/:_id', requireLogin, async (req, res) => {
+        const huaolelo = await Huaolelo.findById(req.params._id)
+        res.send(huaolelo)
+    })
+
     app.post('/api/huaolelo', requireLogin, async (req, res) => {
         const { huaoleloHou, unuhi, wordGroup } = req.body
         const huaoleloInDatabase = await Huaolelo.find({ huaoleloHou }).select({})
