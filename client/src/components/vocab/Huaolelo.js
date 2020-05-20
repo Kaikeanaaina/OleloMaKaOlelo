@@ -5,16 +5,25 @@ import { fetchHighlightedHuaolelo } from '../../actions'
 
 export class Huaolelo extends Component {
     componentDidMount(){
-        console.log('huaolelo mounted', this.props.huaolelo)
-        this.props.fetchHighlightedHuaolelo()
+        if(!this.props.huaolelo.payload){
+            this.props.fetchHighlightedHuaolelo(this.props.match.params.id)
+        }
     }
     renderContent(){
+        if(!this.props.huaolelo.payload){
+            return false
+        }
         return (
             <div>
-                <p>{this.props.huaolelo.huaolelo}</p>
-                <p>{this.props.huaolelo.unuhi}</p>
-                <p>{this.props.huaolelo.wordGroups}</p>
-
+                <p>word: {this.props.huaolelo.payload.huaolelo}</p>
+                <p>definition: {this.props.huaolelo.payload.unuhi}</p>
+                <p>groups: {this.props.huaolelo.payload.wordGroups}</p>
+                <p>audioExamplePlayer</p>
+                <p>image1, image2, image3, image4</p>
+                <p>example1, example2, example3, example4</p>
+                <p>audioExample</p>
+                <p>dateCreated</p>
+                <p>dateLastEdited</p>
             </div>
         )
     }
