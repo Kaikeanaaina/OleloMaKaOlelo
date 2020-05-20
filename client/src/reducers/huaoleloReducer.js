@@ -1,17 +1,16 @@
-import { HIGHLIGHT_A_HUAOLELO, FETCH_HIGHLIGHTED_HUAOLELO } from '../actions/types.js'
+import { HIGHLIGHT_A_HUAOLELO } from '../actions/types.js'
 
-export default function(state = {}, action) {
-    console.log('1reducer', state)
+
+const initialState = {
+    stateHuaolelo: {}
+  }
+
+export default function(state = initialState.stateHuaolelo, action) {
     switch (action.type) {
         case HIGHLIGHT_A_HUAOLELO:
-            state = action.payload
-            console.log('2reducer', state)
-            return state
-        case FETCH_HIGHLIGHTED_HUAOLELO:
-            console.log('3reducer', state)
-            return state
+            const {payload} = action
+            return { ...state, payload}
         default:
-            console.log('4reducer', state)
             return state
     }
 }
