@@ -10,7 +10,8 @@ const huaoleloSchema = new Schema({
     example: [String],
     audioExample: [{title: String, content: String}],
     wordGroups: [WordGroup],
-    dateCreated: {type: Date, default: Date.now}
+    dateCreated: {type: Date, default: Date.now},
+    dateLastEdited: Date,
 })
 
 mongoose.model('huaolelo', huaoleloSchema)
