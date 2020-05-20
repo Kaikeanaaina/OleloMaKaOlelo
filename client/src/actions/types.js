@@ -5,4 +5,3 @@ export const FETCH_ALL_HUAOLELO = 'fetch_all_huaolelo'
 export const FETCH_WORD_GROUPS = 'fetch_word_groups'
 
 export const HIGHLIGHT_A_HUAOLELO = 'highlight_a_huaolelo'
-export const FETCH_HIGHLIGHTED_HUAOLELO = 'fetch_highlighted_huaolelo'
