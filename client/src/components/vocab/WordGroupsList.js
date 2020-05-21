@@ -27,10 +27,9 @@ class WordGroupsList extends Component {
     return this.props.wordGroups.sort(function (firstWordGroup, secondWordGroup) {
       return firstWordGroup.title.localeCompare(secondWordGroup.title)
   }).map(wordgroup => {
-      const { title, unuhi } = wordgroup
       return (
         <div className="card darken-1" key={wordgroup._id}>
-          <WordGroupCard title={title} unuhi={unuhi} />
+          <WordGroupCard wordgroup={wordgroup} />
         </div>
       )
     })
