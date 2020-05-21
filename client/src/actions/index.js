@@ -21,13 +21,15 @@ export const submitHuaolelo = (values, history) => async dispatch => {
 }
 
 export const editHuaolelo = (values, history) => async dispatch => {
-  const res = await axios.put('/api/huaolelo', values)
+  const res = await axios.put(`/api/huaolelo/${values._id}`, values)
   //history.push('/huaolelo')
   dispatch({ type: FETCH_ALL_HUAOLELO, payload: res.data })
 }
 
 export const deleteHuaolelo = (values, history) => async dispatch => {
-  const res = await axios.delete(`/api/huaolelo/$(values._id)`, values)
+  const res = await axios.delete(`/api/huaolelo/${values._id}`, values)
+  history.push('/huaolelo')
+
   dispatch({ type: FETCH_ALL_HUAOLELO, payload: res.data })
 }
 
