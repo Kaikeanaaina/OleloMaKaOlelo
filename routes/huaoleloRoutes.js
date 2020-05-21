@@ -22,8 +22,8 @@ module.exports = app => {
         const { huaoleloHou, unuhi, wordGroup } = req.body
         const huaoleloInDatabase = await Huaolelo.find({ huaoleloHou }).select({})
 
-        if(huaoleloInDatabase.length){
-            return res.send({error: 'HuaOlelo already exists'})
+        if (huaoleloInDatabase.length) {
+            return res.send({ error: 'HuaOlelo already exists' })
         }
 
         const arrayString = huaoleloHou.split('')
@@ -50,13 +50,13 @@ module.exports = app => {
 
         var theIndexOkina = 0
         arrayString.forEach((element) => {
-            if (element === "'"){
+            if (element === "'") {
                 arrayString.splice(theIndexOkina, 1, "ʻ")
                 theIndexOkina++
                 return
             }
             theIndexOkina++
-            return 
+            return
         })
 
         const joiningAllTheStringLetters = arrayString.join('')
@@ -101,10 +101,17 @@ module.exports = app => {
         // // example: exampleArray,
         // // audioExample: allAudioExampleArray
 
+        const wordGroupArrayWholeData = []
+        for (var i = 0; i < wordGroup.length; i++) {
+            const wordGroupToPushToArray = await WordGroup.findById(wordGroup[i])
+            wordGroupArrayWholeData.push(wordGroupToPushToArray)
+        }
+
+
         const huaoleloHouCreated = new Huaolelo({
             huaolelo: joiningAllTheStringLetters,
             unuhi: unuhi,
-            wordGroups: wordGroup
+            wordGroups: wordGroupArrayWholeData
         })
 
         try {
@@ -113,6 +120,24 @@ module.exports = app => {
             res.send(allHuaolelo)
         } catch (err) {
             res.status(422).send(err)
+        }
+    })
+
+    app.delete('/api/huaolelo/:_id', requireLogin, async (req, res) => {
+
+        const huaolelo = await Huaolelo.findById(req.params._id)
+
+        if (!huaolelo) {
+            return res.send({ error: `huaolelo with the id ${req.params._id} does not exists` })
+        }
+
+        try {
+            await Huaolelo.deleteOne({ _id: req.params._id })
+        } catch (err) {
+            res.state(422).send(err)
+        } finally {
+            const naHuaolelo = await Huaolelo.find({}).select({})
+            res.send(naHuaolelo)
         }
     })
 
@@ -152,13 +177,13 @@ module.exports = app => {
 
         var theIndexOkina = 0
         arrayString.forEach((element) => {
-            if (element === "'"){
+            if (element === "'") {
                 arrayString.splice(theIndexOkina, 1, "ʻ")
                 theIndexOkina++
                 return
             }
             theIndexOkina++
-            return 
+            return
         })
 
         const joiningAllTheStringLetters = arrayString.join('')
