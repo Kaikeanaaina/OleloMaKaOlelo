@@ -87,12 +87,11 @@ class NewHuaoleloCard extends Component {
         this.setState({ isLoading: true })
         this.props.submitHuaolelo(this.state)
             .then(() => {
-                this.setState({ huaoleloHou: '', unuhi: '', isShowingInput: false, errorMessage: '', isLoading: false })
+                this.setState({ huaoleloHou: '', unuhi: '', wordGroup: [], isShowingInput: false, errorMessage: '', isLoading: false })
             })
 
     }
     handleSwitch(event) {
-        console.log(this.state)
         switch (event.target.checked) {
             case false:
                 const finding = this.state.wordGroup.indexOf(event.target.value)
