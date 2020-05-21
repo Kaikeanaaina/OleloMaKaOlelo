@@ -84,12 +84,19 @@ class WordGroupCard extends Component {
         this.props.highlightAHuaolelo(object)
     }
     renderHuaoleloForWordGroup() {
-        return this.props.naHuaolelo.filter(huaolelo => huaolelo.wordGroups.some(x => x === this.props.title) === true).sort(function (firstHuaolelo, secondHuaolelo) {
+        return this.props.naHuaolelo
+        // .filter is to modify the array of words that's related to the wordgroup
+        // .some - if it matches the argument, that's what will pass in the filter
+        .filter(huaolelo => huaolelo.wordGroups.some(x => x._id === this.props.wordgroup._id) === true)
+        // .sort to alphabetically sort the array
+        .sort(function(firstHuaolelo, secondHuaolelo){
             return firstHuaolelo.huaolelo.localeCompare(secondHuaolelo.huaolelo)
-        }).map(theHuaolelo => {
+        })
+        // .map to go through the whole array
+        .map(theHuaolelo => {
             return (
                 <div className="card darken-1" key={theHuaolelo._id} onClick={this.handleHuaoleloCard.bind(this, theHuaolelo)}>
-                    <Link to={`/huaolelo/${theHuaolelo._id}`} >
+                    <Link to={`/huaolelo/${theHuaolelo._id}`}>
                         <HuaoleloCard theHuaolelo={theHuaolelo} />
                     </Link>
                 </div>
@@ -97,7 +104,7 @@ class WordGroupCard extends Component {
         })
     }
     render() {
-        const { _id, title, unuhi } = this.props
+        const { _id, title, unuhi } = this.props.wordgroup
         return (
 
             <div className="card-content">
