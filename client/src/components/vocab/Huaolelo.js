@@ -49,52 +49,54 @@ export class Huaolelo extends Component {
                     <h2>{this.props.huaolelo.payload.huaolelo}</h2>
                     {this.state.isLoading ? <ProgressBar /> : null}
 
-                    <div className='editDiv'>
-                        {!this.state.isShowingEditForm
-                            ?
-                            <div className='editButton'>
-                                <Button
-                                    className="orange"
-                                    floating
-                                    icon={<Icon>edit</Icon>}
-                                    small
-                                    node="button"
-                                    waves="light"
-                                    onClick={this.handleButtonThing.bind(this, { title: title })}
-                                />
-                            </div>
-                            :
-                            <div className='editForm'>
-                                <TextInput id={`editHuaolelo${title}`} className={`editHuaolelo`} label="editHuaolelo" name="editHuaolelo" placeholder={title} value={this.state.editHuaolelo} onChange={this.handleChange} />
-                                <TextInput id={`editHuaoleloUnuhi${title}`} className={`editHuaoleloUnuhi`} label="editHuaoleloUnuhi" name="editHuaoleloUnuhi" value={this.state.editHuaoleloUnuhi} onChange={this.handleChange} />
-                                <p style={{ color: 'red' }}>{this.state.errorMessage}</p>
-                                <p style={{ color: 'green' }}>{this.state.noteMessage}</p>
-                                {!this.state.errorMessage && this.state.editHuaolelo && this.state.editHuaoleloUnuhi
-                                    ?
+                    <div>
+                        <div className='editDiv'>
+
+                            {!this.state.isShowingEditForm
+                                ?
+                                <div className='editButton'>
                                     <Button
                                         className="orange"
+                                        floating
+                                        icon={<Icon>edit</Icon>}
                                         small
                                         node="button"
                                         waves="light"
-                                        onClick={this.handleButton.bind(this, { editWordGroup: this.state.editWordGroup, editWordGroupUnuhi: this.state.editWordGroupUnuhi, _id }, 'edit')}
+                                        onClick={this.handleButtonThing.bind(this, { title: title })}
+                                    />
+                                </div>
+                                :
+                                <div className='editForm'>
+                                    <TextInput id={`editHuaolelo${title}`} className={`editHuaolelo`} label="editHuaolelo" name="editHuaolelo" placeholder={title} value={this.state.editHuaolelo} onChange={this.handleChange} />
+                                    <TextInput id={`editHuaoleloUnuhi${title}`} className={`editHuaoleloUnuhi`} label="editHuaoleloUnuhi" name="editHuaoleloUnuhi" value={this.state.editHuaoleloUnuhi} onChange={this.handleChange} />
+                                    <p style={{ color: 'red' }}>{this.state.errorMessage}</p>
+                                    <p style={{ color: 'green' }}>{this.state.noteMessage}</p>
+                                    {!this.state.errorMessage && this.state.editHuaolelo && this.state.editHuaoleloUnuhi
+                                        ?
+                                        <Button
+                                            className="orange"
+                                            small
+                                            node="button"
+                                            waves="light"
+                                            onClick={this.handleButton.bind(this, { editWordGroup: this.state.editWordGroup, editWordGroupUnuhi: this.state.editWordGroupUnuhi, _id }, 'edit')}
+                                        >
+                                            Confirm Edit {title}
+                                        </Button>
+                                        :
+                                        null
+                                    }
+
+                                    <Button
+                                        small
+                                        node="button"
+                                        waves="light"
+                                        onClick={() => this.setState({ isShowingEditForm: false, editWordGroup: '', editWordGroupUnuhi: '', errorMessage: '' })}
                                     >
-                                        Confirm Edit {title}
-                                    </Button>
-                                    :
-                                    null
-                                }
-
-                                <Button
-                                    small
-                                    node="button"
-                                    waves="light"
-                                    onClick={() => this.setState({ isShowingEditForm: false, editWordGroup: '', editWordGroupUnuhi: '', errorMessage: '' })}
-                                >
-                                    Cancel Edit
+                                        Cancel Edit
                                 </Button>
-                            </div>
-                        }
-
+                                </div>
+                            }
+                        </div>
                         <div className='deleteDiv'>
 
                             {!this.state.isShowingConfirmDeleteButton
@@ -133,6 +135,7 @@ export class Huaolelo extends Component {
                         </div>
 
                         <p>definition: {this.props.huaolelo.payload.unuhi}</p>
+
                     </div>
                 </div>
             </div>
