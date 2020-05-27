@@ -3,22 +3,32 @@ import 'materialize-css'
 import { Button, Icon, TextInput, ProgressBar } from 'react-materialize'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { fetchHighlightedHuaolelo, editHuaolelo, deleteHuaolelo } from '../../actions'
+import { fetchHighlightedHuaolelo, editHuaolelo, deleteHuaolelo, fetchNaHuaolelo} from '../../actions'
 
 export class Huaolelo extends Component {
-    state = {
-        isShowingEditForm: false,
-        isShowingConfirmDeleteButton: false,
-        isLoading: false,
-        errorMessage: '',
-        editHuaolelo: '',
+    constructor(props) {
+        super(props)
+        this.state = {
+            isShowingEditForm: false,
+            isShowingConfirmDeleteButton: false,
+            isLoading: false,
+            errorMessage: '',
+            noteMessage: '',
+            editHuaolelo: '',
+            editValueForm: '',
+            huaolelo: '',
+            unuhi: '',
+        }
+        this.handleChange = this.handleChange.bind(this)
     }
     componentDidMount() {
         if (!this.props.huaolelo.payload) {
             this.props.fetchHighlightedHuaolelo(this.props.match.params.id)
         }
+
+        this.props.fetchNaHuaolelo()
     }
-    handleButtonThing(object) {
+    handleButtonThing() {
         this.setState({ isShowingEditForm: true })
     }
     handleButton(object, action) {
@@ -38,15 +48,53 @@ export class Huaolelo extends Component {
                 return null
         }
     }
+    handleChange(evt) {
+        let value = evt.target.value;
+        switch (evt.target.className) {
+            case `editHuaolelo`:
+                let joiningThing;
+                const newArrayToCheckForOkina = evt.target.value.split('')
+                if (newArrayToCheckForOkina[newArrayToCheckForOkina.length - 1] === "'") {
+                    newArrayToCheckForOkina.pop()
+                    newArrayToCheckForOkina.push("ʻ")
+                    joiningThing = newArrayToCheckForOkina.join('')
+                } else {
+                    joiningThing = evt.target.value
+                }
+
+                this.setState({ ...this.state, huaolelo: joiningThing, errorMessage: '', noteMessage: '' });
+                
+                const anotherTitle = (element) => element.huaolelo.toLowerCase() === joiningThing.toLowerCase()
+                var newGroupArray = this.props.naHuaolelo.some(anotherTitle)
+
+                console.log('newGroupArray', newGroupArray)
+
+                if (newGroupArray) {
+                    return this.setState({ errorMessage: 'Huaolelo title already exists' })
+                }
+
+                if (this.state.huaolelo.toLowerCase() === joiningThing.toLowerCase()) {
+                    this.setState({ noteMessage: 'Current huaolelo Title is the same' })
+                }
+
+                return 
+
+            case `editHuaoleloUnuhi`:
+                return this.setState({ unuhi: value })
+            default:
+                return false
+
+        }
+    }
     renderContent() {
-        if (!this.props.huaolelo.payload) {
+        if (!this.props.huaolelo.huaolelo) {
             return false
         }
-        const { title, _id } = this.props.huaolelo.payload
+        const { huaolelo, _id, unuhi } = this.props.huaolelo
         return (
             <div>
                 <div>
-                    <h2>{this.props.huaolelo.payload.huaolelo}</h2>
+                    <h2>{this.props.huaolelo.huaolelo}</h2>
                     {this.state.isLoading ? <ProgressBar /> : null}
 
                     <div>
@@ -62,13 +110,13 @@ export class Huaolelo extends Component {
                                         small
                                         node="button"
                                         waves="light"
-                                        onClick={this.handleButtonThing.bind(this, { title: title })}
+                                        onClick={this.handleButtonThing.bind(this)}
                                     />
                                 </div>
                                 :
                                 <div className='editForm'>
-                                    <TextInput id={`editHuaolelo${title}`} className={`editHuaolelo`} label="editHuaolelo" name="editHuaolelo" placeholder={title} value={this.state.editHuaolelo} onChange={this.handleChange} />
-                                    <TextInput id={`editHuaoleloUnuhi${title}`} className={`editHuaoleloUnuhi`} label="editHuaoleloUnuhi" name="editHuaoleloUnuhi" value={this.state.editHuaoleloUnuhi} onChange={this.handleChange} />
+                                    <TextInput id={`editHuaolelo${huaolelo}`} className={`editHuaolelo`} label="editHuaolelo" name="editHuaolelo" placeholder={huaolelo} value={this.state.huaolelo} onChange={this.handleChange} />
+                                    <TextInput id={`editHuaoleloUnuhi${huaolelo}`} className={`editHuaoleloUnuhi`} label="editHuaoleloUnuhi" name="editHuaoleloUnuhi" placeholder={unuhi} value={this.state.unuhi} onChange={this.handleChange} />
                                     <p style={{ color: 'red' }}>{this.state.errorMessage}</p>
                                     <p style={{ color: 'green' }}>{this.state.noteMessage}</p>
                                     {!this.state.errorMessage && this.state.editHuaolelo && this.state.editHuaoleloUnuhi
@@ -80,7 +128,7 @@ export class Huaolelo extends Component {
                                             waves="light"
                                             onClick={this.handleButton.bind(this, { editWordGroup: this.state.editWordGroup, editWordGroupUnuhi: this.state.editWordGroupUnuhi, _id }, 'edit')}
                                         >
-                                            Confirm Edit {title}
+                                            Confirm Edit {huaolelo}
                                         </Button>
                                         :
                                         null
@@ -90,7 +138,7 @@ export class Huaolelo extends Component {
                                         small
                                         node="button"
                                         waves="light"
-                                        onClick={() => this.setState({ isShowingEditForm: false, editWordGroup: '', editWordGroupUnuhi: '', errorMessage: '' })}
+                                        onClick={() => this.setState({ isShowingEditForm: false, editWordGroup: '', editWordGroupUnuhi: '', errorMessage: '', huaolelo: '', unuhi: '' })}
                                     >
                                         Cancel Edit
                                 </Button>
@@ -119,7 +167,7 @@ export class Huaolelo extends Component {
                                         waves="light"
                                         onClick={this.handleButton.bind(this, { _id }, 'delete')}
                                     >
-                                        Confirm Delete {title}
+                                        Confirm Delete {huaolelo}
                                     </Button>
                                     <Button
 
@@ -134,7 +182,7 @@ export class Huaolelo extends Component {
                             }
                         </div>
 
-                        <p>definition: {this.props.huaolelo.payload.unuhi}</p>
+                        <p>definition: {this.props.huaolelo.unuhi}</p>
 
                     </div>
                 </div>
@@ -151,8 +199,8 @@ export class Huaolelo extends Component {
     }
 }
 
-function mapStateToProps({ huaolelo }) {
-    return { huaolelo }
+function mapStateToProps({ huaolelo, naHuaolelo }) {
+    return { huaolelo, naHuaolelo }
 }
 
-export default connect(mapStateToProps, { fetchHighlightedHuaolelo, editHuaolelo, deleteHuaolelo })(withRouter(Huaolelo))
+export default connect(mapStateToProps, { fetchHighlightedHuaolelo, editHuaolelo, deleteHuaolelo, fetchNaHuaolelo })(withRouter(Huaolelo))
