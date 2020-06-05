@@ -15,6 +15,7 @@ export class Huaolelo extends Component {
             errorMessage: '',
             noteMessage: '',
             editHuaolelo: '',
+            editHuaoleloUnuhi: '',
             editValueForm: '',
             huaolelo: '',
             unuhi: '',
@@ -27,7 +28,7 @@ export class Huaolelo extends Component {
             this.props.fetchHighlightedHuaolelo(this.props.match.params.id)
             this.props.fetchNaHuaolelo()
         }
-        console.log(this.props)
+        //console.log(this.props)
     }
     handleButtonThing() {
         this.setState({ isShowingEditForm: true })
@@ -50,6 +51,9 @@ export class Huaolelo extends Component {
         }
     }
     handleChange(evt) {
+        console.log('alooooohhhaaaa', evt)
+        console.log('gooooodddbbyyyyeeee', this.state)
+        console.log('pppeeeeeoooopppllleee', this.props)
         let value = evt.target.value;
         switch (evt.target.className) {
             case `editHuaolelo`:
@@ -64,12 +68,12 @@ export class Huaolelo extends Component {
                     joiningThing = evt.target.value
                 }
 
-                this.setState({ ...this.state, huaolelo: joiningThing, errorMessage: '', noteMessage: '' });
+                this.setState({ ...this.state, editHuaolelo: joiningThing, errorMessage: '', noteMessage: '' });
 
                 const anotherTitle = (element) => element.huaolelo.toLowerCase() === joiningThing.toLowerCase()
                 var newGroupArray = this.props.naHuaolelo.some(anotherTitle)
 
-                console.log('newGroupArray', newGroupArray)
+                //console.log('newGroupArray', newGroupArray)
 
                 if (newGroupArray) {
                     return this.setState({ errorMessage: 'Huaolelo title already exists' })
@@ -82,23 +86,23 @@ export class Huaolelo extends Component {
                 return
 
             case `editHuaoleloUnuhi`:
-                return this.setState({ unuhi: value })
+                return this.setState({ editHuaoleloUnuhi: value })
             default:
                 return false
 
         }
     }
-    renderWordGroupList () {
+    renderWordGroupList() {
         return this.props.wordGroups.sort(function (firstWordGroup, secondWordGroup) {
             return firstWordGroup.title.localeCompare(secondWordGroup.title)
         }).map(wordgroup => {
 
 
             return this.props.wordGroups.forEach(element => {
-                console.log('this is the element', element)
+                //console.log('this is the element', element)
                 const matches = (huaoleloWordGroup) => huaoleloWordGroup._id === element._id
-                if (this.props.huaolelo.wordGroups.some(matches)){
-                    console.log('made it', element)
+                if (this.props.huaolelo.wordGroups.some(matches)) {
+                    //console.log('made it', element)
                     return (
                         // <Switch
                         //     id={wordgroup.title}
@@ -112,7 +116,7 @@ export class Huaolelo extends Component {
                         <p>hi</p>
                     )
                 } else {
-                    console.log('does not exist in the array', element)
+                    //console.log('does not exist in the array', element)
                     return (
                         // <Switch
                         //     id={wordgroup.title}
@@ -127,54 +131,18 @@ export class Huaolelo extends Component {
                 }
             })
 
-            
+
         })
     }
     renderEditForm() {
+        console.log(this.state)
         this.props.fetchWordGroups()
-
-
-        const { huaolelo, _id, unuhi } = this.props.huaolelo
-        return (
-            <div className='editForm'>
-                <TextInput id={`editHuaolelo${huaolelo}`} className={`editHuaolelo`} label="editHuaolelo" name="editHuaolelo" placeholder={huaolelo} value={this.state.huaolelo} onChange={this.handleChange} />
-                <TextInput id={`editHuaoleloUnuhi${huaolelo}`} className={`editHuaoleloUnuhi`} label="editHuaoleloUnuhi" name="editHuaoleloUnuhi" placeholder={unuhi} value={this.state.unuhi} onChange={this.handleChange} />
-                <p style={{ color: 'red' }}>{this.state.errorMessage}</p>
-                <p style={{ color: 'green' }}>{this.state.noteMessage}</p>
-                {this.renderWordGroupList()}
-
-                {!this.state.errorMessage && this.state.editHuaolelo && this.state.editHuaoleloUnuhi
-                    ?
-                    <Button
-                        className="orange"
-                        small
-                        node="button"
-                        waves="light"
-                        onClick={this.handleButton.bind(this, { editWordGroup: this.state.editWordGroup, editWordGroupUnuhi: this.state.editWordGroupUnuhi, _id }, 'edit')}
-                    >
-                        Confirm Edit {huaolelo}
-                    </Button>
-                    :
-                    null
-                }
-
-                <Button
-                    small
-                    node="button"
-                    waves="light"
-                    onClick={() => this.setState({ isShowingEditForm: false, editWordGroup: '', editWordGroupUnuhi: '', errorMessage: '', huaolelo: '', unuhi: '' })}
-                >
-                    Cancel Edit
-                </Button>
-            </div>
-        )
-
     }
     renderContent() {
         if (!this.props.huaolelo.huaolelo) {
             return false
         }
-        const { huaolelo, _id } = this.props.huaolelo
+        const { huaolelo, _id, unuhi } = this.props.huaolelo
         return (
             <div>
                 <div>
@@ -198,7 +166,37 @@ export class Huaolelo extends Component {
                                     />
                                 </div>
                                 :
-                                this.renderEditForm()
+                                <div className='editForm'>
+                                    <TextInput id={`editHuaolelo${huaolelo}`} className={`editHuaolelo`} label="editHuaolelo" name="editHuaolelo" placeholder={huaolelo} value={this.state.editHuaolelo} onChange={this.handleChange} />
+                                    <TextInput id={`editHuaoleloUnuhi${huaolelo}`} className={`editHuaoleloUnuhi`} label="editHuaoleloUnuhi" name="editHuaoleloUnuhi" placeholder={unuhi} value={this.state.editHuaoleloUnuhi} onChange={this.handleChange} />
+                                    <p style={{ color: 'red' }}>{this.state.errorMessage}</p>
+                                    <p style={{ color: 'green' }}>{this.state.noteMessage}</p>
+                                    {this.renderWordGroupList()}
+
+                                    {!this.state.errorMessage && this.state.editHuaolelo && this.state.editHuaoleloUnuhi
+                                        ?
+                                        <Button
+                                            className="orange"
+                                            small
+                                            node="button"
+                                            waves="light"
+                                            onClick={this.handleButton.bind(this, { editWordGroup: this.state.editWordGroup, editWordGroupUnuhi: this.state.editWordGroupUnuhi, _id }, 'edit')}
+                                        >
+                                            Confirm Edit {huaolelo}
+                                        </Button>
+                                        :
+                                        null
+                                    }
+
+                                    <Button
+                                        small
+                                        node="button"
+                                        waves="light"
+                                        onClick={() => this.setState({ isShowingEditForm: false, editWordGroup: '', editWordGroupUnuhi: '', errorMessage: '', huaolelo: '', unuhi: '' })}
+                                    >
+                                        Cancel Edit
+                                    </Button>
+                                </div>
                             }
                         </div>
                         <div className='deleteDiv'>
@@ -246,6 +244,7 @@ export class Huaolelo extends Component {
         )
     }
     render() {
+        console.log(this.state)
 
         return (
             <div>
