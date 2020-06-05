@@ -28,6 +28,7 @@ export class Huaolelo extends Component {
             this.props.fetchHighlightedHuaolelo(this.props.match.params.id)
             this.props.fetchNaHuaolelo()
         }
+        this.props.fetchWordGroups()
         //console.log(this.props)
     }
     handleButtonThing() {
@@ -38,14 +39,12 @@ export class Huaolelo extends Component {
 
         switch (action) {
             case ('delete'):
-                this.props.deleteHuaolelo(object, this.props.history)
-                return null
+                return this.props.deleteHuaolelo(object, this.props.history)
             case ('edit'):
-                this.props.editHuaolelo(object)
+                return this.props.editHuaolelo(object, this.props.history)
                     .then(() => {
-                        this.setState({ isLoading: false, isShowingEditForm: false, isShowingConfirmEditButton: false, editWordGroup: '', editWordGroupUnuhi: '' })
+                        this.setState({ isLoading: false, isShowingEditForm: false, isShowingConfirmEditButton: false, editHuaolelo: '', editHuaoleloUnuhi: '' })
                     })
-                return null
             default:
                 return null
         }
@@ -134,10 +133,6 @@ export class Huaolelo extends Component {
 
         })
     }
-    renderEditForm() {
-        console.log(this.state)
-        this.props.fetchWordGroups()
-    }
     renderContent() {
         if (!this.props.huaolelo.huaolelo) {
             return false
@@ -167,6 +162,7 @@ export class Huaolelo extends Component {
                                 </div>
                                 :
                                 <div className='editForm'>
+                                    
                                     <TextInput id={`editHuaolelo${huaolelo}`} className={`editHuaolelo`} label="editHuaolelo" name="editHuaolelo" placeholder={huaolelo} value={this.state.editHuaolelo} onChange={this.handleChange} />
                                     <TextInput id={`editHuaoleloUnuhi${huaolelo}`} className={`editHuaoleloUnuhi`} label="editHuaoleloUnuhi" name="editHuaoleloUnuhi" placeholder={unuhi} value={this.state.editHuaoleloUnuhi} onChange={this.handleChange} />
                                     <p style={{ color: 'red' }}>{this.state.errorMessage}</p>
@@ -244,8 +240,6 @@ export class Huaolelo extends Component {
         )
     }
     render() {
-        console.log(this.state)
-
         return (
             <div>
                 {this.renderContent()}
