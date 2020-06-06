@@ -16,12 +16,14 @@ export class Huaolelo extends Component {
             noteMessage: '',
             editHuaolelo: '',
             editHuaoleloUnuhi: '',
+            editHuaoleloWordGroup: [],
             editValueForm: '',
             huaolelo: '',
             unuhi: '',
             count: 0
         }
         this.handleChange = this.handleChange.bind(this)
+        this.handleSwitch = this.handleSwitch.bind(this)
     }
     componentDidMount() {
         if (!this.props.huaolelo.payload) {
@@ -29,7 +31,6 @@ export class Huaolelo extends Component {
             this.props.fetchNaHuaolelo()
         }
         this.props.fetchWordGroups()
-        //console.log(this.props)
     }
     handleButtonThing() {
         this.setState({ isShowingEditForm: true })
@@ -50,9 +51,7 @@ export class Huaolelo extends Component {
         }
     }
     handleChange(evt) {
-        console.log('alooooohhhaaaa', evt)
-        console.log('gooooodddbbyyyyeeee', this.state)
-        console.log('pppeeeeeoooopppllleee', this.props)
+        console.log('state', this.state)
         let value = evt.target.value;
         switch (evt.target.className) {
             case `editHuaolelo`:
@@ -91,46 +90,45 @@ export class Huaolelo extends Component {
 
         }
     }
+    handleSwitch(event) {
+        console.log(this.state.editHuaoleloWordGroup)
+        switch (event.target.checked) {
+            case false:
+                const finding = this.state.editHuaoleloWordGroup.indexOf(event.target.value)
+                this.state.editHuaoleloWordGroup.splice(finding, 1)
+                return this.setState({ editHuaoleloWordGroup: this.state.editHuaoleloWordGroup })
+            case true:
+                this.state.editHuaoleloWordGroup.push(event.target.value)
+                return this.setState({ editHuaoleloWordGroup: this.state.editHuaoleloWordGroup })
+            default:
+                return null
+        }
+    }
     renderWordGroupList() {
         return this.props.wordGroups.sort(function (firstWordGroup, secondWordGroup) {
             return firstWordGroup.title.localeCompare(secondWordGroup.title)
         }).map(wordgroup => {
-
-
-            return this.props.wordGroups.forEach(element => {
-                //console.log('this is the element', element)
-                const matches = (huaoleloWordGroup) => huaoleloWordGroup._id === element._id
-                if (this.props.huaolelo.wordGroups.some(matches)) {
-                    //console.log('made it', element)
-                    return (
-                        // <Switch
-                        //     id={wordgroup.title}
-                        //     key={wordgroup.title}
-                        //     offLabel="Off"
-                        //     onLabel={wordgroup.title}
-                        //     value={wordgroup._id}
-                        //     onChange={this.handleSwitch}
-                        //     checked
-                        // />
-                        <p>hi</p>
-                    )
-                } else {
-                    //console.log('does not exist in the array', element)
-                    return (
-                        // <Switch
-                        //     id={wordgroup.title}
-                        //     key={wordgroup.title}
-                        //     offLabel="Off"
-                        //     onLabel={wordgroup.title}
-                        //     value={wordgroup._id}
-                        //     onChange={this.handleSwitch}
-                        // />
-                        <p>bye</p>
-                    )
-                }
-            })
-
-
+            return (
+                <Switch
+                    id={wordgroup.title}
+                    key={wordgroup.title}
+                    offLabel="Off"
+                    onLabel={wordgroup.title}
+                    value={wordgroup._id}
+                    onChange={this.handleSwitch}
+                />
+            )
+        })
+    }
+    renderWordGroupListOfHuaolelo() {
+        return this.props.huaolelo.wordGroups.sort(function (firstWordGroup, secondWordGroup) {
+            return firstWordGroup.title.localeCompare(secondWordGroup.title)
+        }).map(wordgroup => {
+            return (
+                <div key={wordgroup._id}>
+                    <p>{wordgroup.title}</p>
+                </div>
+            )
         })
     }
     renderContent() {
@@ -162,14 +160,15 @@ export class Huaolelo extends Component {
                                 </div>
                                 :
                                 <div className='editForm'>
-                                    
+
                                     <TextInput id={`editHuaolelo${huaolelo}`} className={`editHuaolelo`} label="editHuaolelo" name="editHuaolelo" placeholder={huaolelo} value={this.state.editHuaolelo} onChange={this.handleChange} />
                                     <TextInput id={`editHuaoleloUnuhi${huaolelo}`} className={`editHuaoleloUnuhi`} label="editHuaoleloUnuhi" name="editHuaoleloUnuhi" placeholder={unuhi} value={this.state.editHuaoleloUnuhi} onChange={this.handleChange} />
                                     <p style={{ color: 'red' }}>{this.state.errorMessage}</p>
                                     <p style={{ color: 'green' }}>{this.state.noteMessage}</p>
+                                    {this.renderWordGroupListOfHuaolelo()}
                                     {this.renderWordGroupList()}
 
-                                    {!this.state.errorMessage && this.state.editHuaolelo && this.state.editHuaoleloUnuhi
+                                    {!this.state.errorMessage && this.state.editHuaolelo && this.state.editHuaoleloUnuhi && (this.state.editHuaoleloWordGroup.length > 0)
                                         ?
                                         <Button
                                             className="orange"
@@ -188,7 +187,7 @@ export class Huaolelo extends Component {
                                         small
                                         node="button"
                                         waves="light"
-                                        onClick={() => this.setState({ isShowingEditForm: false, editWordGroup: '', editWordGroupUnuhi: '', errorMessage: '', huaolelo: '', unuhi: '' })}
+                                        onClick={() => this.setState({ isShowingEditForm: false, editHuaolelo: '', editHuaoleloUnuhi: '', errorMessage: '', huaolelo: '', unuhi: '', editHuaoleloWordGroup:[] })}
                                     >
                                         Cancel Edit
                                     </Button>
