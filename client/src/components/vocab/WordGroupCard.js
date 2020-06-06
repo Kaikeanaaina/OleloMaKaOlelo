@@ -45,11 +45,11 @@ class WordGroupCard extends Component {
                 const anotherTitle = (element) => element.title.toLowerCase() === joiningThing.toLowerCase()
                 var newGroupArray = this.props.wordGroups.some(anotherTitle)
 
-                if (newGroupArray && this.state.currentWordGroup.toLowerCase() !== value.toLowerCase()) {
+                if (newGroupArray && this.props.wordgroup.title.toLowerCase() !== value.toLowerCase()) {
                     return this.setState({ errorMessage: 'Word Group title already exists' })
                 }
 
-                if (this.state.currentWordGroup.toLowerCase() === value.toLowerCase()) {
+                if (this.props.wordgroup.title.toLowerCase() === value.toLowerCase()) {
                     this.setState({ noteMessage: 'Current Title is the same' })
                 }
 
@@ -61,7 +61,7 @@ class WordGroupCard extends Component {
         }
     }
     handleButton(object, action) {
-        this.setState({ isLoading: !this.state.isLoading })
+        this.setState({ isLoading: !this.state.isLoading})
 
         switch (action) {
             case ('delete'):
@@ -129,8 +129,8 @@ class WordGroupCard extends Component {
                         />
                         :
                         <div>
-                            <TextInput id={`editWordGroup${title}`} className={`editWordGroup`} label="editWordGroup" name="editWordGroup" placeholder={title} value={this.state.editWordGroup} onChange={this.handleChange} />
-                            <TextInput id={`editWordGroupUnuhi${title}`} className={`editWordGroupUnuhi`} label="editWordGroupUnuhi" name="editWordGroupUnuhi" value={this.state.editWordGroupUnuhi} onChange={this.handleChange} />
+                            <TextInput id={`editWordGroup${title}`} className={`editWordGroup`} label="editWordGroup" name="editWordGroup" placeholder={title} onChange={this.handleChange} />
+                            <TextInput id={`editWordGroupUnuhi${title}`} className={`editWordGroupUnuhi`} label="editWordGroupUnuhi" name="editWordGroupUnuhi" placeholder={unuhi} onChange={this.handleChange} />
                             <p style={{ color: 'red' }}>{this.state.errorMessage}</p>
                             <p style={{ color: 'green' }}>{this.state.noteMessage}</p>
                             {!this.state.errorMessage && this.state.editWordGroup && this.state.editWordGroupUnuhi
