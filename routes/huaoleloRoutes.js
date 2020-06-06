@@ -123,6 +123,34 @@ module.exports = app => {
         }
     })
 
+    app.put('/api/huaolelo/:_id', requireLogin, async (req, res) => {
+
+        const { _id, editHuaolelo, editHuaoleloUnuhi, editHuaoleloWordGroup } = req.body
+
+        const wordGroupArrayWholeData = []
+        for (var i = 0; i < editHuaoleloWordGroup.length; i++) {
+            const wordGroupToPushToArray = await WordGroup.findById(editHuaoleloWordGroup[i])
+            wordGroupArrayWholeData.push(wordGroupToPushToArray)
+        }
+
+        await Huaolelo.updateOne({
+            _id: _id
+        }, {
+            huaolelo: editHuaolelo,
+            unuhi: editHuaoleloUnuhi,
+            wordGroups: wordGroupArrayWholeData
+        })
+
+        const huaolelo = await Huaolelo.findById(req.params._id)
+        try {
+            
+            res.send(huaolelo)
+        } catch (err) {
+            res.status(422).send(err)
+        }
+
+    })
+
     app.delete('/api/huaolelo/:_id', requireLogin, async (req, res) => {
 
         const huaolelo = await Huaolelo.findById(req.params._id)
@@ -207,8 +235,9 @@ module.exports = app => {
         }
     })
 
-    app.put('/api/wordGroup', requireLogin, async (req, res) => {
+    app.put('/api/wordGroup/:_id', requireLogin, async (req, res) => {
         console.log('11111111111PUT', req.body)
+        console.log('11111111111PUT', req.params._id)
 
         // if (!req.body) {
         //     return res.send({ error: 'there is no body in the request' })
