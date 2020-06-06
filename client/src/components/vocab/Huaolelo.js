@@ -26,10 +26,8 @@ export class Huaolelo extends Component {
         this.handleSwitch = this.handleSwitch.bind(this)
     }
     componentDidMount() {
-        if (!this.props.huaolelo.payload) {
-            this.props.fetchHighlightedHuaolelo(this.props.match.params.id)
-            this.props.fetchNaHuaolelo()
-        }
+        this.props.fetchHighlightedHuaolelo(this.props.match.params.id)
+        this.props.fetchNaHuaolelo()
         this.props.fetchWordGroups()
     }
     handleButtonThing() {
@@ -37,7 +35,6 @@ export class Huaolelo extends Component {
     }
     handleButton(object, action) {
         this.setState({ isLoading: !this.state.isLoading })
-
         switch (action) {
             case ('delete'):
                 return this.props.deleteHuaolelo(object, this.props.history)
@@ -51,7 +48,6 @@ export class Huaolelo extends Component {
         }
     }
     handleChange(evt) {
-        console.log('state', this.state)
         let value = evt.target.value;
         switch (evt.target.className) {
             case `editHuaolelo`:
@@ -71,8 +67,6 @@ export class Huaolelo extends Component {
                 const anotherTitle = (element) => element.huaolelo.toLowerCase() === joiningThing.toLowerCase()
                 var newGroupArray = this.props.naHuaolelo.some(anotherTitle)
 
-                //console.log('newGroupArray', newGroupArray)
-
                 if (newGroupArray) {
                     return this.setState({ errorMessage: 'Huaolelo title already exists' })
                 }
@@ -91,7 +85,6 @@ export class Huaolelo extends Component {
         }
     }
     handleSwitch(event) {
-        console.log(this.state.editHuaoleloWordGroup)
         switch (event.target.checked) {
             case false:
                 const finding = this.state.editHuaoleloWordGroup.indexOf(event.target.value)
@@ -165,7 +158,9 @@ export class Huaolelo extends Component {
                                     <TextInput id={`editHuaoleloUnuhi${huaolelo}`} className={`editHuaoleloUnuhi`} label="editHuaoleloUnuhi" name="editHuaoleloUnuhi" placeholder={unuhi} value={this.state.editHuaoleloUnuhi} onChange={this.handleChange} />
                                     <p style={{ color: 'red' }}>{this.state.errorMessage}</p>
                                     <p style={{ color: 'green' }}>{this.state.noteMessage}</p>
+
                                     {this.renderWordGroupListOfHuaolelo()}
+                                    <h5>Make sure to have add the current word group list for the huaolelo</h5>
                                     {this.renderWordGroupList()}
 
                                     {!this.state.errorMessage && this.state.editHuaolelo && this.state.editHuaoleloUnuhi && (this.state.editHuaoleloWordGroup.length > 0)
@@ -175,7 +170,7 @@ export class Huaolelo extends Component {
                                             small
                                             node="button"
                                             waves="light"
-                                            onClick={this.handleButton.bind(this, { editWordGroup: this.state.editWordGroup, editWordGroupUnuhi: this.state.editWordGroupUnuhi, _id }, 'edit')}
+                                            onClick={this.handleButton.bind(this, { editHuaoleloWordGroup: this.state.editHuaoleloWordGroup, editHuaoleloUnuhi: this.state.editHuaoleloUnuhi, _id, editHuaolelo: this.state.editHuaolelo }, 'edit')}
                                         >
                                             Confirm Edit {huaolelo}
                                         </Button>
@@ -187,7 +182,7 @@ export class Huaolelo extends Component {
                                         small
                                         node="button"
                                         waves="light"
-                                        onClick={() => this.setState({ isShowingEditForm: false, editHuaolelo: '', editHuaoleloUnuhi: '', errorMessage: '', huaolelo: '', unuhi: '', editHuaoleloWordGroup:[] })}
+                                        onClick={() => this.setState({ isShowingEditForm: false, editHuaolelo: '', editHuaoleloUnuhi: '', errorMessage: '', huaolelo: '', unuhi: '', editHuaoleloWordGroup: [] })}
                                     >
                                         Cancel Edit
                                     </Button>
